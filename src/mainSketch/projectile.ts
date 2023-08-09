@@ -1,10 +1,10 @@
-import p5 from "p5";
+import p5 from 'p5';
 
 //moving to tone.js
 // https://tonejs.github.io/docs/14.7.77/Signal
 // https://github.com/Tonejs/Tone.js/wiki/Signals
 // https://tonejs.github.io/docs/14.7.77/Oscillator.html#frequency
-import * as Tone from "tone";
+import * as Tone from 'tone';
 
 import {
     deleteProjectiles,
@@ -13,14 +13,14 @@ import {
     getProjectiles,
     getSocket,
     getWeaponSystem,
-} from "./mainSketch";
-import { shakeCamera } from "./cameraShake";
-import { getPowerups, powerupTakeDamage } from "./powerups";
-import { duckTakeDamage, getDucks } from "./ducks";
-import { darkenSky } from "./sky";
-import { calcGroundHeightAt } from "./ground";
-import { spawnExplosion } from "./explosions";
-import { worldPositionToScreenPosition } from "./coordsUtils";
+} from './mainSketch';
+import { shakeCamera } from './cameraShake';
+import { getPowerups, powerupTakeDamage } from './powerups';
+import { duckTakeDamage, getDucks } from './ducks';
+import { darkenSky } from './sky';
+import { calcGroundHeightAt } from './ground';
+import { spawnExplosion } from './explosions';
+import { worldPositionToScreenPosition } from './coordsUtils';
 
 export class Projectile {
     pos: p5.Vector;
@@ -44,7 +44,7 @@ export class Projectile {
         p.rotate(this.vel.heading());
         p.imageMode(p.CENTER);
 
-        p.image(getImageFor("bullet"), 0, 0);
+        p.image(getImageFor('bullet'), 0, 0);
         p.pop();
         this.drawTrail(p);
     }
@@ -71,7 +71,7 @@ export class Projectile {
             shakeCamera();
             darkenSky();
             killProjectile(this, p);
-            spawnExplosion(this.pos, this.vel, "tank", p);
+            spawnExplosion(this.pos, this.vel, 'tank', p);
         }
 
         for (const pup of getPowerups()) {
@@ -79,7 +79,7 @@ export class Projectile {
                 spawnExplosion(
                     this.pos,
                     this.vel,
-                    pup.isOpened ? "crateOpened" : "crateClosed",
+                    pup.isOpened ? 'crateOpened' : 'crateClosed',
                     p
                 );
                 killProjectile(this, p);
@@ -89,7 +89,7 @@ export class Projectile {
 
         for (const duck of getDucks()) {
             if (this.pos.dist(duck.pos) < duck.size && !duck.isDead) {
-                spawnExplosion(this.pos, this.vel, "crateClosed", p);
+                spawnExplosion(this.pos, this.vel, 'crateClosed', p);
                 killProjectile(this, p);
                 duckTakeDamage(duck, this, p);
             }
@@ -101,7 +101,7 @@ export class Projectile {
             spawnExplosion(
                 p.createVector(this.pos.x, groundY - 5),
                 this.vel,
-                "ground",
+                'ground',
                 p
             );
         }
@@ -110,17 +110,17 @@ export class Projectile {
 
 let projectileForAudio: Projectile | undefined;
 let projectileOsc: Tone.Oscillator;
-let projectileOscAmpSignal: Tone.Signal<"number">;
-let projectileOscFreqSignal: Tone.Signal<"frequency">;
+let projectileOscAmpSignal: Tone.Signal<'number'>;
+let projectileOscFreqSignal: Tone.Signal<'frequency'>;
 
 export function setupProjectileSounds(p: p5) {
     //  = new p5.Oscillator(440, 'sine');
-    projectileOsc = new Tone.Oscillator(440, "sine").toDestination().start();
+    projectileOsc = new Tone.Oscillator(440, 'sine').toDestination().start();
     // a scheduleable signal which can be connected to control an AudioParam or another Signal
 
     projectileOscFreqSignal = new Tone.Signal({
-        value: "C4",
-        units: "frequency",
+        value: 'C4',
+        units: 'frequency',
     }).connect(projectileOsc.frequency);
 
     // the scheduled ramp controls the connected signal
@@ -157,14 +157,13 @@ export function processReceivedBullet(bullet: ReceivedProjectile, p: p5) {
 }
 
 export function emitProjectile(projectile: Projectile) {
-    getSocket().emit("bulletFired", {
+    getSocket().emit('bulletFired', {
         pos: projectile.pos,
         vel: projectile.vel,
     });
 }
 
 export function fireProjectile(p: p5) {
-    debugger;
     if (!getWeaponSystem().canFire()) {
         return false;
     }
@@ -190,13 +189,14 @@ export function maybeStartTrackingProjectileForAudio(
     projectile: Projectile,
     p: p5
 ) {
+    //first time use?
+    if (!projectileForAudio) {
+        Tone.start(); //from user gesture.
+        projectileOsc.start(5);
+    }
     projectileOscAmpSignal.rampTo(-1, 0.01);
     projectileOscFreqSignal.rampTo(200, 0.01);
 
-    //first time use?
-    if (!projectileForAudio) {
-        projectileOsc.start();
-    }
     projectileForAudio = projectile;
 }
 
@@ -252,6 +252,13 @@ export function updateProjectileSound(p: p5) {
                 -0.5,
                 true
             );
+            false &&
+                console.log({
+                    velBasedAmp,
+                    distBasedGain,
+                    product: velBasedAmp * distBasedGain,
+                    vol,
+                });
             projectileOscAmpSignal.rampTo(vol, 0.1);
         }
     }

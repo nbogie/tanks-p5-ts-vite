@@ -21,7 +21,7 @@ interface Powerup {
 export function setupPowerups(p: p5) {
     if (getConfig().includePowerups) {
         createPowerups(p);
-        setInterval(maybeAddPowerupToWorld, 5000);
+        setInterval(() => maybeAddPowerupToWorld(p), 5000);
     } else {
         powerups = [];
     }
@@ -35,7 +35,7 @@ export function maybeAddPowerupToWorld(p: p5) {
 }
 
 export function createPowerups(p: p5) {
-    powerups = collect(10, (ix) => createPowerup(p));
+    powerups = collect(10, () => createPowerup(p));
 }
 
 export function createPowerup(p: p5) {

@@ -29,7 +29,7 @@ export function getDucks(): Duck[] {
 export function setupDucks(p: p5) {
     if (getConfig().includeDucks) {
         createDucks(p);
-        setInterval(maybeAddDuckToWorld, 5000);
+        setInterval(() => maybeAddDuckToWorld(p), 5000);
     } else {
         ducks = [];
     }
@@ -43,7 +43,7 @@ export function maybeAddDuckToWorld(p: p5) {
 }
 
 export function createDucks(p: p5) {
-    ducks = collect(10, (ix) => createDuck(p));
+    ducks = collect(10, () => createDuck(p));
 }
 
 export function createDuck(p: p5): Duck {

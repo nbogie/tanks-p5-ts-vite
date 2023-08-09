@@ -192,7 +192,7 @@ export function maybeStartTrackingProjectileForAudio(
     //first time use?
     if (!projectileForAudio) {
         Tone.start(); //from user gesture.
-        projectileOsc.start(5);
+        projectileOsc.start(1);
     }
     projectileOscAmpSignal.rampTo(-1, 0.01);
     projectileOscFreqSignal.rampTo(200, 0.01);

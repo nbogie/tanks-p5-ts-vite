@@ -43,65 +43,6 @@ export const tankImgs: Record<string, p5.Image> = {};
 
 let clouds: Cloud[] = [];
 
-function setupSounds(p: p5) {
-    setupProjectileSounds(p);
-}
-
-function registerSocketListeners() {
-    socket.on('newClientStart', () => {});
-    socket.emit('newClientStart');
-    socket.on('tankUpdate', processReceivedTank);
-    socket.on('bulletFired', processReceivedBullet);
-}
-
-function drawHUDText(p: p5) {
-    p.textSize(20);
-    p.text(
-        'Cached tank ids: ' +
-            Object.keys(cachedTanks)
-                .map((id: string) => '...' + id.slice(-4))
-                .join(', '),
-        100,
-        120
-    );
-    p.text(
-        config.shouldTransmit ? 'transmit is on (t)' : 'transmit is off (t)',
-        100,
-        150
-    );
-    p.text('Weapon: ' + (weaponSystem.canFire() ? 'OK' : '...'), 100, 180);
-    p.text('ammo: ' + '*'.repeat(weaponSystem.getAmmoCount()), 100, 210);
-}
-
-function keyPressed(_event: object | undefined, p: p5) {
-    // console.log("key pressed: ", { event, p });
-    if (p.key === ' ') {
-        if (player.isDead) {
-            return;
-        }
-        const projectile = fireProjectile(p);
-        if (projectile) {
-            emitProjectile(projectile);
-        }
-    }
-    if (p.key === 't') {
-        config.shouldTransmit = !config.shouldTransmit;
-    }
-}
-function processReceivedTank(receivedTank: ReceivedTank, p: p5) {
-    if (!(receivedTank.id in cachedTanks)) {
-        const newTank = new Tank(
-            receivedTank.pos.x,
-            receivedTank.pos.y,
-            receivedTank.id,
-            p
-        );
-        cachedTanks[receivedTank.id] = newTank;
-    }
-    const cachedTank = cachedTanks[receivedTank.id];
-    cachedTank.updateFromReceivedTank(receivedTank);
-}
-
 new p5(createSketch);
 
 function createSketch(p: p5) {
@@ -179,6 +120,65 @@ function createSketch(p: p5) {
     p.preload = preload;
     p.keyPressed = (e) => keyPressed(e, p);
     p.windowResized = () => p.resizeCanvas(p.windowWidth, p.windowHeight);
+}
+
+function setupSounds(p: p5) {
+    setupProjectileSounds(p);
+}
+
+function registerSocketListeners() {
+    socket.on('newClientStart', () => {});
+    socket.emit('newClientStart');
+    socket.on('tankUpdate', processReceivedTank);
+    socket.on('bulletFired', processReceivedBullet);
+}
+
+function drawHUDText(p: p5) {
+    p.textSize(20);
+    p.text(
+        'Cached tank ids: ' +
+            Object.keys(cachedTanks)
+                .map((id: string) => '...' + id.slice(-4))
+                .join(', '),
+        100,
+        120
+    );
+    p.text(
+        config.shouldTransmit ? 'transmit is on (t)' : 'transmit is off (t)',
+        100,
+        150
+    );
+    p.text('Weapon: ' + (weaponSystem.canFire() ? 'OK' : '...'), 100, 180);
+    p.text('ammo: ' + '*'.repeat(weaponSystem.getAmmoCount()), 100, 210);
+}
+
+function keyPressed(_event: object | undefined, p: p5) {
+    // console.log("key pressed: ", { event, p });
+    if (p.key === ' ') {
+        if (player.isDead) {
+            return;
+        }
+        const projectile = fireProjectile(p);
+        if (projectile) {
+            emitProjectile(projectile);
+        }
+    }
+    if (p.key === 't') {
+        config.shouldTransmit = !config.shouldTransmit;
+    }
+}
+function processReceivedTank(receivedTank: ReceivedTank, p: p5) {
+    if (!(receivedTank.id in cachedTanks)) {
+        const newTank = new Tank(
+            receivedTank.pos.x,
+            receivedTank.pos.y,
+            receivedTank.id,
+            p
+        );
+        cachedTanks[receivedTank.id] = newTank;
+    }
+    const cachedTank = cachedTanks[receivedTank.id];
+    cachedTank.updateFromReceivedTank(receivedTank);
 }
 
 export function getPlayer(): Tank {

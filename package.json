@@ -7,6 +7,7 @@
         "dev": "vite",
         "build": "tsc && vite build",
         "preview": "vite preview",
+        "test": "vitest --no-watch src",
         "type-check": "tsc --noEmit",
         "type-check:watch": "tsc --noEmit --watch"
     },
@@ -14,7 +15,8 @@
         "@types/p5": "^1.6.2",
         "prettier": "^3.0.1",
         "typescript": "^5.0.2",
-        "vite": "^4.4.5"
+        "vite": "^4.4.5",
+        "vitest": "^0.34.1"
     },
     "dependencies": {
         "p5": "^1.7.0",

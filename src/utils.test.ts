@@ -1,4 +1,6 @@
+import { expect, test } from 'vitest'; //also, assert
 import { partition } from './utils';
+
 test('partition', () => {
     function isEven(n: number): boolean {
         return n % 2 === 0;

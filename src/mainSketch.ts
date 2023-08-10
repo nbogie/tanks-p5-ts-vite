@@ -22,6 +22,7 @@ import './style.css';
 import { drawSun } from './sun';
 import { ReceivedTank, Tank } from './tank';
 import { WeaponSystem, setupWeaponSystem } from './weaponSys';
+import { setupPalette } from './palette';
 const config = {
     shouldTransmit: false,
     includeDucks: true,
@@ -40,27 +41,10 @@ let weaponSystem: WeaponSystem;
 export const tankImgs: Record<string, p5.Image> = {};
 // export let turretImg: p5.Image;
 
-let palette: Palette;
-
 let clouds: Cloud[] = [];
 
 function setupSounds(p: p5) {
     setupProjectileSounds(p);
-}
-
-function setupPalette() {
-    const palette = {
-        grass: 'rgb(82,180,82)',
-        dirt: 'rgb(181,133,74)',
-        dust: 'rgba(187,151,60,0.82)',
-        cloud: 'rgba(255,255,255,0.22)',
-    };
-    return palette;
-}
-export type Palette = ReturnType<typeof setupPalette>;
-
-export function getPaletteColour(key: keyof Palette): string {
-    return palette[key];
 }
 
 function registerSocketListeners() {
@@ -143,7 +127,7 @@ function createSketch(p: p5) {
         player = new Tank(p.random(100, 500), 300, myId, p);
 
         registerSocketListeners();
-        palette = setupPalette();
+        setupPalette();
         weaponSystem = setupWeaponSystem(p);
         setupSounds(p);
         setupSky(p);

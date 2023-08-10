@@ -1,7 +1,7 @@
 import p5 from 'p5';
 import { calcGroundHeightAt } from './ground';
 import { worldPositionToScreenPosition } from './coordsUtils';
-import { getPaletteColour } from './mainSketch';
+import { getPaletteColour } from './palette';
 
 let dustParticles: DustParticle[] = [];
 

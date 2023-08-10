@@ -5,7 +5,8 @@ import {
 } from './coordsUtils';
 import { getSkyReflectionColourUnder } from './sky';
 import { collect } from './utils';
-import { getPaletteColour, getPlayer } from './mainSketch';
+import { getPlayer } from './mainSketch';
+import { getPaletteColour } from './palette';
 
 export function setupClouds(p: p5): Cloud[] {
     return collect(100, () => createCloud(p));

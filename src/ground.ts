@@ -1,6 +1,7 @@
 import p5 from 'p5';
 import { isSkyDarkened } from './sky';
-import { getPaletteColour, getPlayer } from './mainSketch';
+import { getPlayer } from './mainSketch';
+import { getPaletteColour } from './palette';
 
 const terrainNoiseScale = 0.004;
 

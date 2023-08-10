@@ -7,9 +7,9 @@ import { drawDustParticles, updateDustParticles } from './dust';
 import { drawExplosions, updateExplosions } from './explosions';
 import { drawGround } from './ground';
 import { loadImages } from './images';
+import { setupPalette } from './palette';
 import { drawPowerups, setupPowerups, updatePowerups } from './powerups';
 import {
-    Projectile,
     drawProjectiles,
     emitProjectile,
     fireProjectile,
@@ -22,7 +22,6 @@ import './style.css';
 import { drawSun } from './sun';
 import { ReceivedTank, Tank } from './tank';
 import { WeaponSystem, setupWeaponSystem } from './weaponSys';
-import { setupPalette } from './palette';
 const config = {
     shouldTransmit: false,
     includeDucks: true,
@@ -35,7 +34,6 @@ const seed = 123;
 
 let player: Tank;
 const cachedTanks: Tank[] = [];
-let projectiles: Projectile[] = [];
 let weaponSystem: WeaponSystem;
 
 export const tankImgs: Record<string, p5.Image> = {};
@@ -197,10 +195,6 @@ export function getTankImgFor(key: string): p5.Image {
     return tankImgs[key];
 }
 
-export function getProjectiles(): Projectile[] {
-    return projectiles;
-}
-
 // export function getTurretImg(): p5.Image {
 //     return turretImg;
 // }
@@ -215,8 +209,4 @@ export function storeTankImageFor(key: string, imgToStore: p5.Image) {
 
 export function getWeaponSystem(): WeaponSystem {
     return weaponSystem;
-}
-
-export function deleteProjectiles(_p: p5) {
-    projectiles = projectiles.filter((bullet) => !bullet.isDead);
 }

@@ -6,13 +6,7 @@ import p5 from 'p5';
 // https://tonejs.github.io/docs/14.7.77/Oscillator.html#frequency
 import * as Tone from 'tone';
 
-import {
-    deleteProjectiles,
-    getPlayer,
-    getProjectiles,
-    getSocket,
-    getWeaponSystem,
-} from './mainSketch';
+import { getPlayer, getSocket, getWeaponSystem } from './mainSketch';
 import { shakeCamera } from './cameraShake';
 import { getPowerups, powerupTakeDamage } from './powerups';
 import { duckTakeDamage, getDucks } from './ducks';
@@ -21,6 +15,8 @@ import { calcGroundHeightAt } from './ground';
 import { spawnExplosion } from './explosions';
 import { worldPositionToScreenPosition } from './coordsUtils';
 import { getImageFor } from './images';
+
+let projectiles: Projectile[] = [];
 
 export class Projectile {
     pos: p5.Vector;
@@ -262,4 +258,12 @@ export function updateProjectileSound(p: p5) {
             projectileOscAmpSignal.rampTo(vol, 0.1);
         }
     }
+}
+
+export function getProjectiles(): Projectile[] {
+    return projectiles;
+}
+
+export function deleteProjectiles(_p: p5) {
+    projectiles = projectiles.filter((bullet) => !bullet.isDead);
 }

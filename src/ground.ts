@@ -5,7 +5,7 @@ import { getPaletteColour, getPlayer } from './mainSketch';
 const terrainNoiseScale = 0.004;
 
 export function calcGroundHeightAt(x: number, p: p5, zOffset: number = 0) {
-    let noiseVal = p.noise(x * terrainNoiseScale, zOffset * terrainNoiseScale);
+    const noiseVal = p.noise(x * terrainNoiseScale, zOffset * terrainNoiseScale);
     return p.map(noiseVal, 0.1, 0.9, 680, 400, true);
 }
 

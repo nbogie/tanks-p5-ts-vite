@@ -15,7 +15,7 @@ export function lerpColours(
 
     //what fraction of 1 takes us between colour "stops"?
     //Example: with three colours, c1 is at 0, c2 is at 0.5, c3 is at 1, so colourStopDist is 0.5: (1 / (number of colours - 1))
-    let colourStopDist = 1 / (colours.length - 1);
+    const colourStopDist = 1 / (colours.length - 1);
 
     //determine WHICH two colours we are between
     //However, perhaps we're perfectly at a single colour (e.g. at 0.8 with 6 colours, when stops are 0.2 apart, so c1 and c2 are both 4 (floor(0.8/0.2), and ceil of same)

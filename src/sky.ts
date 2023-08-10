@@ -1,7 +1,7 @@
 import p5 from 'p5';
 import { lerpColours } from './colourUtils';
 import { starPositionToScreenPosition } from './coordsUtils';
-import { collect } from '../utils/utils';
+import { collect } from './utils';
 
 let skyColours: p5.Color[];
 let darknessRemaining = 0;

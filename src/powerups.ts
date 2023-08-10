@@ -2,7 +2,7 @@ import p5 from 'p5';
 import { calcGroundHeightAt } from './ground';
 import { Projectile } from './projectile';
 import { worldPositionToScreenPosition } from './coordsUtils';
-import { collect } from '../utils/utils';
+import { collect } from './utils';
 import { getConfig, getImageFor, getPlayer } from './mainSketch';
 
 let powerups: Powerup[];

@@ -20,7 +20,7 @@ import { drawSky, setupSky, updateSky } from './sky';
 import { drawSun } from './sun';
 import { ReceivedTank, Tank } from './tank';
 import { WeaponSystem, setupWeaponSystem } from './weaponSys';
-import '../style.css';
+import './style.css';
 let config = {
     shouldTransmit: false,
     includeDucks: true,

@@ -3,7 +3,7 @@ import { getConfig, getImageFor } from './mainSketch';
 import { Projectile } from './projectile';
 import { calcGroundHeightAt } from './ground';
 import { worldPositionToScreenPosition } from './coordsUtils';
-import { collect } from '../utils/utils';
+import { collect } from './utils';
 
 //assets from https://www.kenney.nl/assets/shooting-gallery
 let ducks: Duck[];

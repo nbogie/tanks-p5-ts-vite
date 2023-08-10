@@ -4,7 +4,7 @@ import {
     worldPositionToScreenPosition,
 } from './coordsUtils';
 import { getSkyReflectionColourUnder } from './sky';
-import { collect } from '../utils/utils';
+import { collect } from './utils';
 import { getPaletteColour, getPlayer } from './mainSketch';
 
 export function setupClouds(p: p5): Cloud[] {

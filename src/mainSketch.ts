@@ -21,7 +21,7 @@ import { drawSun } from './sun';
 import { ReceivedTank, Tank } from './tank';
 import { WeaponSystem, setupWeaponSystem } from './weaponSys';
 import './style.css';
-let config = {
+const config = {
     shouldTransmit: false,
     includeDucks: true,
     includePowerups: true,
@@ -29,15 +29,15 @@ let config = {
 
 const socket = io('https://socketioserverc7demo.neillbogie.repl.co');
 
-let seed = 123;
+const seed = 123;
 
 let player: Tank;
-let cachedTanks: Tank[] = [];
+const cachedTanks: Tank[] = [];
 let projectiles: Projectile[] = [];
 let weaponSystem: WeaponSystem;
 
-let tankImgs: Record<string, p5.Image> = {};
-let images: { [key: string]: p5.Image } = {}; //all other images
+const tankImgs: Record<string, p5.Image> = {};
+const images: { [key: string]: p5.Image } = {}; //all other images
 let turretImg: p5.Image;
 
 let palette: Palette;
@@ -91,8 +91,8 @@ function drawHUDText(p: p5) {
 
 function loadImages(p: p5) {
     for (let i = 0; i < 5; i++) {
-        let greyPath = 'tanks_tankGrey' + p.str(i + 1) + '.png';
-        let imageGrey = p.loadImage('/images/' + greyPath);
+        const greyPath = 'tanks_tankGrey' + p.str(i + 1) + '.png';
+        const imageGrey = p.loadImage('/images/' + greyPath);
         tankImgs[i] = imageGrey;
         // let navyPath = 'tanks_tankNavy' + p.str(i + 1) + '.png';
         // let imageNavy = p.loadImage('/images/' + navyPath);
@@ -114,7 +114,7 @@ function loadImages(p: p5) {
     images.duckStick = p.loadImage('/images/' + 'stick_wood.png');
 }
 
-function keyPressed(_event: any, p: p5) {
+function keyPressed(_event: object | undefined, p: p5) {
     // console.log("key pressed: ", { event, p });
     if (p.key === ' ') {
         if (player.isDead) {
@@ -184,7 +184,7 @@ function createSketch(p: p5) {
         drawSun(p);
         drawDucks(p);
         drawGround(p);
-        for (let cTank of Object.values(cachedTanks)) {
+        for (const cTank of Object.values(cachedTanks)) {
             cTank.draw(p);
         }
 

@@ -201,13 +201,13 @@ export function maybeStartTrackingProjectileForAudio(
 }
 
 export function drawProjectiles(p: p5) {
-    for (let bullet of getProjectiles()) {
+    for (const bullet of getProjectiles()) {
         bullet.draw(p);
     }
 }
 
 export function updateProjectiles(p: p5) {
-    for (let bullet of getProjectiles()) {
+    for (const bullet of getProjectiles()) {
         bullet.update(p);
     }
     updateProjectileSound(p);

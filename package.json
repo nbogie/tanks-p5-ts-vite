@@ -9,6 +9,7 @@
         "preview": "vite preview",
         "test": "vitest --no-watch src",
         "type-check": "tsc --noEmit",
+        "lint":"eslint --ext .ts src/",
         "type-check:watch": "tsc --noEmit --watch",
         "format": "prettier --write src/**/*.ts"
     },

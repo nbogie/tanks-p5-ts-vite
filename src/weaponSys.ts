@@ -12,7 +12,7 @@ export function setupWeaponSystem(p: p5): WeaponSystem {
     let ammoCount = 5;
     let lastFiredMillis: number | null = null;
     let lastRegainAmmoMillis: number | null = null;
-    let ammoRegenPeriodMillis = 600;
+    const ammoRegenPeriodMillis = 600;
 
     function hasAmmo() {
         return ammoCount > 0;

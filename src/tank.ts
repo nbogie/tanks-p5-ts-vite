@@ -249,7 +249,7 @@ function drawTrajectoryLine(tank: Tank, angle: number, p: p5) {
     p.strokeWeight(5);
 
     if (tank.aiming === true && p.frameCount % 1 === 0) {
-        let randColor = p.color(p.random(['red', 'orange']));
+        const randColor = p.color(p.random(['red', 'orange']));
         p.stroke(randColor);
     } else {
         p.stroke('black');

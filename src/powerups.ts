@@ -3,7 +3,8 @@ import { calcGroundHeightAt } from './ground';
 import { Projectile } from './projectile';
 import { worldPositionToScreenPosition } from './coordsUtils';
 import { collect } from './utils';
-import { getConfig, getImageFor, getPlayer } from './mainSketch';
+import { getConfig, getPlayer } from './mainSketch';
+import { getImageFor } from './images';
 
 let powerups: Powerup[];
 

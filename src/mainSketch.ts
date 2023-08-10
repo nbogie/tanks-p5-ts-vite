@@ -6,6 +6,7 @@ import { drawDucks, setupDucks, updateDucks } from './ducks';
 import { drawDustParticles, updateDustParticles } from './dust';
 import { drawExplosions, updateExplosions } from './explosions';
 import { drawGround } from './ground';
+import { loadImages } from './images';
 import { drawPowerups, setupPowerups, updatePowerups } from './powerups';
 import {
     Projectile,
@@ -17,10 +18,10 @@ import {
     updateProjectiles,
 } from './projectile';
 import { drawSky, setupSky, updateSky } from './sky';
+import './style.css';
 import { drawSun } from './sun';
 import { ReceivedTank, Tank } from './tank';
 import { WeaponSystem, setupWeaponSystem } from './weaponSys';
-import './style.css';
 const config = {
     shouldTransmit: false,
     includeDucks: true,
@@ -36,9 +37,8 @@ const cachedTanks: Tank[] = [];
 let projectiles: Projectile[] = [];
 let weaponSystem: WeaponSystem;
 
-const tankImgs: Record<string, p5.Image> = {};
-const images: { [key: string]: p5.Image } = {}; //all other images
-let turretImg: p5.Image;
+export const tankImgs: Record<string, p5.Image> = {};
+// export let turretImg: p5.Image;
 
 let palette: Palette;
 
@@ -87,31 +87,6 @@ function drawHUDText(p: p5) {
     );
     p.text('Weapon: ' + (weaponSystem.canFire() ? 'OK' : '...'), 100, 180);
     p.text('ammo: ' + '*'.repeat(weaponSystem.getAmmoCount()), 100, 210);
-}
-
-function loadImages(p: p5) {
-    for (let i = 0; i < 5; i++) {
-        const greyPath = 'tanks_tankGrey' + p.str(i + 1) + '.png';
-        const imageGrey = p.loadImage('/images/' + greyPath);
-        tankImgs[i] = imageGrey;
-        // let navyPath = 'tanks_tankNavy' + p.str(i + 1) + '.png';
-        // let imageNavy = p.loadImage('/images/' + navyPath);
-        // tankImgs[i] = imageNavy;
-    }
-
-    images.bullet = p.loadImage('/images/' + 'tank_bullet2.png');
-    images.shield = p.loadImage('/images/' + 'shield.png');
-    images.arrowEmpty = p.loadImage('/images/' + 'tank_arrowEmpty.png');
-    images.arrowFull = p.loadImage('/images/' + 'tank_arrowFull.png');
-    images.crateWood = p.loadImage('/images/' + 'tanks_crateWood.png');
-    images.crateArmor = p.loadImage('/images/' + 'tanks_crateArmor.png');
-    images.crateAmmo = p.loadImage('/images/' + 'tanks_crateAmmo.png');
-    images.crateRepair = p.loadImage('/images/' + 'tanks_crateRepair.png');
-    turretImg = p.loadImage('/images/' + 'turret2.png');
-    images.duck1 = p.loadImage('/images/' + 'duck_outline_target_brown.png');
-    images.duck2 = p.loadImage('/images/' + 'duck_outline_target_white.png');
-    images.duck3 = p.loadImage('/images/' + 'duck_outline_target_yellow.png');
-    images.duckStick = p.loadImage('/images/' + 'stick_wood.png');
 }
 
 function keyPressed(_event: object | undefined, p: p5) {
@@ -231,9 +206,6 @@ export function getConfig(): Config {
     return config;
 }
 
-export function getImageFor(key: string): p5.Image {
-    return images[key];
-}
 export function getSocket() {
     return socket;
 }
@@ -245,9 +217,9 @@ export function getProjectiles(): Projectile[] {
     return projectiles;
 }
 
-export function getTurretImg(): p5.Image {
-    return turretImg;
-}
+// export function getTurretImg(): p5.Image {
+//     return turretImg;
+// }
 
 export function getRandomTankImgIx(p: p5) {
     return p.random(Object.keys(tankImgs));

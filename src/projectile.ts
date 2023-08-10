@@ -8,7 +8,6 @@ import * as Tone from 'tone';
 
 import {
     deleteProjectiles,
-    getImageFor,
     getPlayer,
     getProjectiles,
     getSocket,
@@ -21,6 +20,7 @@ import { darkenSky } from './sky';
 import { calcGroundHeightAt } from './ground';
 import { spawnExplosion } from './explosions';
 import { worldPositionToScreenPosition } from './coordsUtils';
+import { getImageFor } from './images';
 
 export class Projectile {
     pos: p5.Vector;

@@ -261,6 +261,6 @@ export function getWeaponSystem(): WeaponSystem {
     return weaponSystem;
 }
 
-export function deleteProjectiles(p: p5) {
+export function deleteProjectiles(_p: p5) {
     projectiles = projectiles.filter((bullet) => !bullet.isDead);
 }

@@ -52,7 +52,7 @@ export function createPowerup(p: p5) {
 
 export function powerupTakeDamage(
     powerup: Powerup,
-    projectile: Projectile
+    _projectile: Projectile
 ): void {
     powerup.isOpened = true;
 }
@@ -111,7 +111,7 @@ export function handlePowerupPlayerCollision(powerup: Powerup, p: p5) {
     }
 }
 
-export function playerCollectPowerup(powerup: Powerup, p: p5) {
+export function playerCollectPowerup(powerup: Powerup, _p: p5) {
     switch (powerup.kind) {
         case 'repair':
             getPlayer().health++;
@@ -125,7 +125,7 @@ export function playerCollectPowerup(powerup: Powerup, p: p5) {
     }
 }
 
-export function playerCanCollectPowerup(powerup: Powerup, p: p5) {
+export function playerCanCollectPowerup(powerup: Powerup, _p: p5) {
     if (getPlayer().isDead) {
         return false;
     }

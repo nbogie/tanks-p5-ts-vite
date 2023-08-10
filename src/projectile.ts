@@ -113,7 +113,7 @@ let projectileOsc: Tone.Oscillator;
 let projectileOscAmpSignal: Tone.Signal<'number'>;
 let projectileOscFreqSignal: Tone.Signal<'frequency'>;
 
-export function setupProjectileSounds(p: p5) {
+export function setupProjectileSounds(_p: p5) {
     //  = new p5.Oscillator(440, 'sine');
     projectileOsc = new Tone.Oscillator(440, 'sine').toDestination().start();
     // a scheduleable signal which can be connected to control an AudioParam or another Signal
@@ -134,7 +134,7 @@ export function setupProjectileSounds(p: p5) {
     // projectileOsc.volume.value = 0;
 }
 
-export function killProjectile(projectile: Projectile, p: p5) {
+export function killProjectile(projectile: Projectile, _p: p5) {
     projectile.isDead = true;
     if (projectileForAudio === projectile) {
         projectileOscAmpSignal.rampTo(-1, 0.1);
@@ -187,7 +187,7 @@ export function fireProjectile(p: p5) {
 
 export function maybeStartTrackingProjectileForAudio(
     projectile: Projectile,
-    p: p5
+    _p: p5
 ) {
     //first time use?
     if (!projectileForAudio) {

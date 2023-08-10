@@ -39,7 +39,7 @@ export function collect<T>(
  *
  * If you want to keep the return values, see `collect`
  */
-export function repeat<T>(
+export function repeat(
     numRepeats: number,
     callbackFunction: (optionalNum?: number) => void
 ): void {

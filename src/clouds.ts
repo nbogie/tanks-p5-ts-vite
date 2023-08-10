@@ -8,7 +8,7 @@ import { collect } from './utils';
 import { getPaletteColour, getPlayer } from './mainSketch';
 
 export function setupClouds(p: p5): Cloud[] {
-    return collect(100, (ix) => createCloud(p));
+    return collect(100, () => createCloud(p));
 }
 export interface Cloud {
     pos: p5.Vector;

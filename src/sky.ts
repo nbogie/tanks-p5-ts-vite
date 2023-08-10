@@ -12,14 +12,14 @@ interface Star {
     size: number;
 }
 export function setupSky(p: p5) {
-    stars = collect(100, (ix) => createStar(p));
+    stars = collect(100, (_ix) => createStar(p));
     const set1: p5.Color[] = [
         p.color('rgb(50,50,101)'),
         p.color('cyan'),
         p.color('pink'),
         p.color('rgb(190,151,158)'),
     ];
-    const set2 = [p.color('rgb(50,50,101)'), p.color('pink')];
+    // const set2 = [p.color('rgb(50,50,101)'), p.color('pink')];
     skyColours = p.random([set1]); //set2
 }
 

@@ -6,7 +6,7 @@ let explosions: Explosion[] = [];
 
 export function spawnExplosion(
     pos: p5.Vector,
-    vel: p5.Vector,
+    _vel: p5.Vector,
     terrainType: TerrainTypeForExplosion,
     p: p5
 ) {

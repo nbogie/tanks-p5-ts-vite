@@ -1,5 +1,8 @@
 import p5 from 'p5';
-import { Projectile } from './projectile';
+import { worldPositionToScreenPosition } from './coordsUtils';
+import { fireDustParticle } from './dust';
+import { spawnExplosion } from './explosions';
+import { calcGroundAngle, calcGroundHeightAt } from './ground';
 import {
     getConfig,
     getImageFor,
@@ -7,13 +10,9 @@ import {
     getRandomTankImgIx,
     getSocket,
     getTankImgFor,
-    getTurretImg,
     storeTankImageFor,
 } from './mainSketch';
-import { calcGroundAngle, calcGroundHeightAt } from './ground';
-import { spawnExplosion } from './explosions';
-import { worldPositionToScreenPosition } from './coordsUtils';
-import { fireDustParticle } from './dust';
+import { Projectile } from './projectile';
 
 export interface ReceivedTank {
     pos: p5.Vector;
@@ -84,7 +83,7 @@ export class Tank {
         const imgWhite = makeAndCacheWhiteImageIfNecessary(this.imgIx + '', p);
         const imgToDraw = this.damageDisplay > 0 ? imgWhite : img;
 
-        // drawTurret(this, this.barrelAngle)
+        // _drawTurret(this, this.barrelAngle)
         if (this.isDead) {
             p.tint(255, 70);
         }
@@ -235,15 +234,15 @@ export class Tank {
     }
 }
 
-function drawTurret(tank: Tank, angle: number, p: p5) {
-    p.push();
-    let pos = p5.Vector.fromAngle(angle).mult(10);
-    // translate(0,-20) //up to visual turret position
-    p.rotate(angle);
-    p.translate(getTurretImg().width / 2, 0);
-    p.image(getTurretImg(), 0, 0);
-    p.pop();
-}
+// function drawTurret(_tank: Tank, angle: number, p: p5) {
+//     p.push();
+//     // let pos = p5.Vector.fromAngle(angle).mult(10);
+//     // translate(0,-20) //up to visual turret position
+//     p.rotate(angle);
+//     p.translate(getTurretImg().width / 2, 0);
+//     p.image(getTurretImg(), 0, 0);
+//     p.pop();
+// }
 
 function drawTrajectoryLine(tank: Tank, angle: number, p: p5) {
     p.push();
@@ -256,7 +255,7 @@ function drawTrajectoryLine(tank: Tank, angle: number, p: p5) {
         p.stroke('black');
     }
 
-    let pos = p5.Vector.fromAngle(angle).mult(10);
+    // let pos = p5.Vector.fromAngle(angle).mult(10);
     // translate(0,-20) //up to visual turret position
     p.rotate(angle);
     p.scale(tank.aimPower / 75);

@@ -12,6 +12,7 @@ export function spawnExplosion(
 ) {
     explosions.push({
         particles: createParticles(pos, terrainType, p),
+        spawnTimeMillis: p.millis(),
     });
 }
 
@@ -44,6 +45,7 @@ interface ExplosionParticle {
 
 interface Explosion {
     particles: ExplosionParticle[];
+    spawnTimeMillis: number;
 }
 
 export function createParticles(
@@ -116,6 +118,8 @@ export function updateExplosions(p: p5) {
     for (const e of explosions) {
         updateExplosion(e, p);
     }
+    const millisNow = p.millis();
+    explosions = explosions.filter((e) => e.spawnTimeMillis + 5000 > millisNow);
 }
 
 export function updateExplosion(e: Explosion, p: p5) {

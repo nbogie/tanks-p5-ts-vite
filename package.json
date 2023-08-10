@@ -9,7 +9,8 @@
         "preview": "vite preview",
         "test": "vitest --no-watch src",
         "type-check": "tsc --noEmit",
-        "type-check:watch": "tsc --noEmit --watch"
+        "type-check:watch": "tsc --noEmit --watch",
+        "format": "prettier --write src/**/*.ts"
     },
     "devDependencies": {
         "@types/p5": "^1.6.2",

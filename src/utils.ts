@@ -47,3 +47,8 @@ export function repeat(
         callbackFunction(i);
     }
 }
+
+/** same as what p5.random(arr) does, but no need for the p5 reference */
+export function pick<T>(arr: T[]): T {
+    return arr[Math.floor(Math.random() * arr.length)];
+}

@@ -1,7 +1,7 @@
 import p5 from 'p5';
 import { generateCameraShakeVector, updateCamera } from './cameraShake';
 import { drawClouds, setupClouds, updateClouds } from './clouds';
-import { getConfigValue, toggleConfig } from './config';
+import { toggleConfig } from './config';
 import { drawDucks, setupDucks, updateDucks } from './ducks';
 import { drawDustParticles, updateDustParticles } from './dust';
 import { drawExplosions, updateExplosions } from './explosions';
@@ -21,13 +21,10 @@ import { setupSocketIO } from './socketio';
 import './style.css';
 import { drawSun } from './sun';
 import { Tank } from './tank';
-import { getCachedTankKeys, getCachedTanks } from './tanksCache';
-import {
-    getWeaponSystem,
-    setupWeaponSystem,
-    updateWeaponSystem,
-} from './weaponSys';
+import { getCachedTanks } from './tanksCache';
+import { setupWeaponSystem, updateWeaponSystem } from './weaponSys';
 import { setupSounds } from './sound';
+import { drawDebugHUD } from './debugHUD';
 
 const seed = 123;
 
@@ -81,7 +78,7 @@ function createSketch(p: p5) {
         drawExplosions(p);
         drawClouds(p);
         drawMiniMap(p);
-        drawHUDText(p);
+        drawDebugHUD(p);
 
         player.update(p);
         updatePowerups(p);
@@ -108,27 +105,6 @@ function createSketch(p: p5) {
     p.preload = preload;
     p.keyPressed = (e) => keyPressed(e, p);
     p.windowResized = () => p.resizeCanvas(p.windowWidth, p.windowHeight);
-}
-
-function drawHUDText(p: p5) {
-    p.textSize(20);
-    p.text(
-        'Cached tank ids: ' +
-            getCachedTankKeys()
-                .map((id: string) => '...' + id.slice(-4))
-                .join(', '),
-        100,
-        120
-    );
-    p.text(
-        getConfigValue('shouldTransmit')
-            ? 'transmit is on (t)'
-            : 'transmit is off (t)',
-        100,
-        150
-    );
-    p.text('Weapon: ' + (getWeaponSystem().canFire() ? 'OK' : '...'), 100, 180);
-    p.text('ammo: ' + '*'.repeat(getWeaponSystem().getAmmoCount()), 100, 210);
 }
 
 function keyPressed(_event: object | undefined, p: p5) {

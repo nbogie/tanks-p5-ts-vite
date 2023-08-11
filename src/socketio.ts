@@ -30,8 +30,10 @@ export function setupSocketIO(p: p5) {
 function registerSocketListeners(p: p5) {
     socket.on('newClientStart', () => {});
     socket.emit('newClientStart');
-    socket.on('tankUpdate', (tankData) => processReceivedTank(tankData, p));
-    socket.on('bulletFired', (bulletData) =>
+    socket.on('tankUpdate', (tankData: ReceivedTank) =>
+        processReceivedTank(tankData, p)
+    );
+    socket.on('bulletFired', (bulletData: ReceivedProjectile) =>
         processReceivedBullet(bulletData, p)
     );
 }

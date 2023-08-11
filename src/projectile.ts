@@ -78,6 +78,8 @@ export class Projectile {
             'indigo',
             'violet',
         ];
+        p.push();
+
         const stripeSpacing = 5;
 
         p.translate(0, -(stripeSpacing * 7) / 2);
@@ -97,6 +99,7 @@ export class Projectile {
             p.noFill();
             p.endShape();
         }
+        p.pop();
     }
 
     update(p: p5) {

@@ -27,6 +27,7 @@ I chose vite because my older parcer 2 starter for p5.js with TypeScript wouldn'
 -   add a weapon system which limits fire rate and ammo (slow regen by default)
 -   stars in the dark part of the sky
 -   supply crates (that do nothing once shot open and collected!)
+-   minimap
 
 minor additions:
 
@@ -43,6 +44,7 @@ minor additions:
 -   firing recoil
 -   impacts jostle the recipient tank
 -   parallax clouds and distant hills
+-   minimap
 
 ### Credits
 

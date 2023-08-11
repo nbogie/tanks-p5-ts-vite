@@ -22,10 +22,12 @@ import './style.css';
 import { drawSun } from './sun';
 import { ReceivedTank, Tank } from './tank';
 import { WeaponSystem, setupWeaponSystem } from './weaponSys';
+import { drawMiniMap } from './minimap';
 const config = {
     shouldTransmit: false,
     includeDucks: true,
     includePowerups: true,
+    shouldDrawMiniMapCoords: true,
 };
 
 const socket = io('https://socketioserverc7demo.neillbogie.repl.co');
@@ -92,6 +94,8 @@ function createSketch(p: p5) {
         drawProjectiles(p);
         drawExplosions(p);
         drawClouds(clouds, p);
+        drawMiniMap(p);
+        drawHUDText(p);
 
         player.update(p);
         updatePowerups(p);
@@ -103,7 +107,6 @@ function createSketch(p: p5) {
         updateSky(p);
         updateDucks(p);
         weaponSystem.update();
-        drawHUDText(p);
     }
 
     function handleMousePressed() {
@@ -193,6 +196,10 @@ export function getSocket() {
 }
 export function getTankImgFor(key: string): p5.Image {
     return tankImgs[key];
+}
+
+export function getCachedTanks(): Tank[] {
+    return Object.values(cachedTanks);
 }
 
 // export function getTurretImg(): p5.Image {

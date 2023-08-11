@@ -21,7 +21,6 @@ function isOnMiniMap(mpos: p5.Vector, p: p5) {
 }
 
 function drawMiniMapChrome(p: p5) {
-    //draw outline
     p.push();
     p.translate(0, minimapConfig.height / 2);
     p.rectMode(p.CENTER);
@@ -29,7 +28,6 @@ function drawMiniMapChrome(p: p5) {
     p.strokeWeight(1);
     p.stroke('white');
     p.rect(0, 0, minimapConfig.width, minimapConfig.height, 10);
-    // rect(0, 0, minimapConfig.width, minimapConfig.height, 10)
     p.pop();
 }
 
@@ -87,7 +85,7 @@ export function drawMiniMap(p: p5) {
     p.translate(worldPositionToMiniMapPosition(getPlayer().pos, p));
     p.noStroke();
     p.fill('white');
-    // p.circle(0, 0, 6);
+    p.circle(0, 0, 6);
     p.pop();
 
     p.pop();

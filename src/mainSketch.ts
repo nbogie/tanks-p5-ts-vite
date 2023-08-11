@@ -14,7 +14,6 @@ import {
     drawProjectiles,
     emitProjectile,
     fireProjectile,
-    setupProjectileSounds,
     updateProjectiles,
 } from './projectile';
 import { drawSky, setupSky, updateSky } from './sky';
@@ -28,6 +27,7 @@ import {
     setupWeaponSystem,
     updateWeaponSystem,
 } from './weaponSys';
+import { setupSounds } from './sound';
 
 const seed = 123;
 
@@ -108,10 +108,6 @@ function createSketch(p: p5) {
     p.preload = preload;
     p.keyPressed = (e) => keyPressed(e, p);
     p.windowResized = () => p.resizeCanvas(p.windowWidth, p.windowHeight);
-}
-
-function setupSounds(p: p5) {
-    setupProjectileSounds(p);
 }
 
 function drawHUDText(p: p5) {

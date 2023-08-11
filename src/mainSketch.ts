@@ -21,7 +21,11 @@ import { drawSky, setupSky, updateSky } from './sky';
 import './style.css';
 import { drawSun } from './sun';
 import { ReceivedTank, Tank } from './tank';
-import { WeaponSystem, setupWeaponSystem } from './weaponSys';
+import {
+    getWeaponSystem,
+    setupWeaponSystem,
+    updateWeaponSystem,
+} from './weaponSys';
 import { drawMiniMap } from './minimap';
 import { getConfigValue, toggleConfig } from './config';
 const socket = io('https://socketioserverc7demo.neillbogie.repl.co');
@@ -30,7 +34,6 @@ const seed = 123;
 
 let player: Tank;
 const cachedTanks: Tank[] = [];
-let weaponSystem: WeaponSystem;
 
 export const tankImgs: Record<string, p5.Image> = {};
 // export let turretImg: p5.Image;
@@ -40,9 +43,6 @@ let clouds: Cloud[] = [];
 new p5(createSketch);
 
 function createSketch(p: p5) {
-    //In instance mode your previously "global" variables can live here
-    //(where they won't conflict with other loaded sketches)
-
     function preload() {
         loadImages(p);
     }
@@ -58,12 +58,12 @@ function createSketch(p: p5) {
         myCanvas.mousePressed(handleMousePressed);
 
         //not quite guaranteed unique but it'll do for now
-        const myId = p.floor(p.random(999999999999));
+        const myId = p.floor(p.random(Number.MAX_SAFE_INTEGER));
         player = new Tank(p.random(100, 500), 300, myId, p);
 
         registerSocketListeners();
         setupPalette();
-        weaponSystem = setupWeaponSystem(p);
+        setupWeaponSystem(p);
         setupSounds(p);
         setupSky(p);
         clouds = setupClouds(p);
@@ -100,7 +100,7 @@ function createSketch(p: p5) {
         updateClouds(clouds, p);
         updateSky(p);
         updateDucks(p);
-        weaponSystem.update();
+        updateWeaponSystem(p);
     }
 
     function handleMousePressed() {
@@ -145,8 +145,8 @@ function drawHUDText(p: p5) {
         100,
         150
     );
-    p.text('Weapon: ' + (weaponSystem.canFire() ? 'OK' : '...'), 100, 180);
-    p.text('ammo: ' + '*'.repeat(weaponSystem.getAmmoCount()), 100, 210);
+    p.text('Weapon: ' + (getWeaponSystem().canFire() ? 'OK' : '...'), 100, 180);
+    p.text('ammo: ' + '*'.repeat(getWeaponSystem().getAmmoCount()), 100, 210);
 }
 
 function keyPressed(_event: object | undefined, p: p5) {
@@ -209,8 +209,4 @@ export function getRandomTankImgIx(p: p5) {
 
 export function storeTankImageFor(key: string, imgToStore: p5.Image) {
     tankImgs[key] = imgToStore;
-}
-
-export function getWeaponSystem(): WeaponSystem {
-    return weaponSystem;
 }

@@ -8,7 +8,16 @@ export interface WeaponSystem {
     update: () => void;
 }
 
-export function setupWeaponSystem(p: p5): WeaponSystem {
+let weaponSystemGlobal: WeaponSystem;
+
+export function getWeaponSystem(): WeaponSystem {
+    return weaponSystemGlobal;
+}
+
+export function updateWeaponSystem(_p: p5): void {
+    weaponSystemGlobal.update();
+}
+export function setupWeaponSystem(p: p5): void {
     let ammoCount = 5;
     let lastFiredMillis: number | null = null;
     let lastRegainAmmoMillis: number | null = null;
@@ -47,12 +56,12 @@ export function setupWeaponSystem(p: p5): WeaponSystem {
         }
     }
 
-    const weaponSystem: WeaponSystem = {
+    const newWeaponSystem: WeaponSystem = {
         getAmmoCount,
         hasAmmo,
         canFire,
         countFiring,
         update,
     };
-    return weaponSystem;
+    weaponSystemGlobal = newWeaponSystem;
 }

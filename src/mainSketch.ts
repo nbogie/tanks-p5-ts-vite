@@ -1,5 +1,5 @@
 import p5 from 'p5';
-import { io } from 'socket.io-client';
+import { Socket, io } from 'socket.io-client';
 import { generateCameraShakeVector, updateCamera } from './cameraShake';
 import { Cloud, drawClouds, setupClouds, updateClouds } from './clouds';
 import { drawDucks, setupDucks, updateDucks } from './ducks';
@@ -10,6 +10,7 @@ import { loadImages } from './images';
 import { setupPalette } from './palette';
 import { drawPowerups, setupPowerups, updatePowerups } from './powerups';
 import {
+    ReceivedProjectile,
     drawProjectiles,
     emitProjectile,
     fireProjectile,
@@ -28,7 +29,26 @@ import {
 } from './weaponSys';
 import { drawMiniMap } from './minimap';
 import { getConfigValue, toggleConfig } from './config';
-const socket = io('https://socketioserverc7demo.neillbogie.repl.co');
+
+//https://socket.io/docs/v4/typescript/
+interface ServerToClientEvents {
+    newClientStart: () => void;
+    basicEmit: (a: number, b: string, c: Buffer) => void;
+    tankUpdate: (tankData: ReceivedTank) => void;
+    bulletFired: (bulletData: ReceivedProjectile) => void;
+
+    // withAck: (d: string, callback: (e: number) => void) => void;
+}
+
+interface ClientToServerEvents {
+    newClientStart: () => void;
+    tankUpdate: (tankData: ReceivedTank) => void;
+    bulletFired: (bulletData: ReceivedProjectile) => void;
+}
+
+const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(
+    'https://socketioserverc7demo.neillbogie.repl.co'
+);
 
 const seed = 123;
 
@@ -61,7 +81,7 @@ function createSketch(p: p5) {
         const myId = p.floor(p.random(Number.MAX_SAFE_INTEGER));
         player = new Tank(p.random(100, 500), 300, myId, p);
 
-        registerSocketListeners();
+        registerSocketListeners(p);
         setupPalette();
         setupWeaponSystem(p);
         setupSounds(p);
@@ -121,11 +141,13 @@ function setupSounds(p: p5) {
     setupProjectileSounds(p);
 }
 
-function registerSocketListeners() {
+function registerSocketListeners(p: p5) {
     socket.on('newClientStart', () => {});
     socket.emit('newClientStart');
-    socket.on('tankUpdate', processReceivedTank);
-    socket.on('bulletFired', processReceivedBullet);
+    socket.on('tankUpdate', (tankData) => processReceivedTank(tankData, p));
+    socket.on('bulletFired', (bulletData) =>
+        processReceivedBullet(bulletData, p)
+    );
 }
 
 function drawHUDText(p: p5) {

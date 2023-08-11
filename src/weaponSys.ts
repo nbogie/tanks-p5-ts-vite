@@ -1,6 +1,5 @@
 import p5 from 'p5';
 import { ProjectileKind } from './projectile';
-import { pick } from './utils';
 
 export interface WeaponSystem {
     getAmmoCount: () => number;
@@ -16,11 +15,6 @@ let weaponSystemGlobal: WeaponSystem;
 
 export function getWeaponSystem(): WeaponSystem {
     return weaponSystemGlobal;
-}
-
-export function randomProjectileKind(): ProjectileKind {
-    const choices: ProjectileKind[] = ['drunk', 'homing', 'normal'];
-    return pick(choices);
 }
 
 export function updateWeaponSystem(_p: p5): void {

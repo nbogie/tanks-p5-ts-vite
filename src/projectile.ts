@@ -16,9 +16,15 @@ import {
     maybeStartTrackingProjectileForAudio,
     updateProjectileSound,
 } from './sound';
+import { pick } from './utils';
 
 let projectiles: Projectile[] = [];
-export type ProjectileKind = 'normal' | 'homing' | 'drunk';
+export type ProjectileKind = 'normal' | 'rainbow' | 'drunk';
+export function randomProjectileKind(): ProjectileKind {
+    const choices: ProjectileKind[] = ['drunk', 'rainbow', 'normal'];
+    return pick(choices);
+}
+
 export class Projectile {
     pos: p5.Vector;
     vel: p5.Vector;
@@ -45,7 +51,11 @@ export class Projectile {
 
         p.image(getImageFor('bullet'), 0, 0);
         p.pop();
-        this.drawTrail(p);
+        if (this.kind === 'rainbow') {
+            this.drawRainbowTrail(p);
+        } else {
+            this.drawTrail(p);
+        }
     }
 
     drawTrail(p: p5) {
@@ -58,6 +68,37 @@ export class Projectile {
         p.noFill();
         p.endShape();
     }
+    drawRainbowTrail(p: p5) {
+        const rainbowColours = [
+            'red',
+            'orange',
+            'yellow',
+            'lime',
+            'dodgerblue',
+            'indigo',
+            'violet',
+        ];
+        const stripeSpacing = 5;
+
+        p.translate(0, -(stripeSpacing * 7) / 2);
+
+        for (let i = 0; i < 7; i++) {
+            const colour = rainbowColours[i];
+            //not quite right, each stripe shouldn't be translated directly down from the previous, rather, into the arc, perpendicular the the direction of movement at that point.
+            //otherwise, when the shell is near vertical, the stripe will be very thin.
+            p.translate(0, stripeSpacing);
+            p.beginShape();
+            for (const tp of this.trail) {
+                const wp = worldPositionToScreenPosition(tp, p);
+                p.vertex(wp.x, wp.y);
+            }
+            p.strokeWeight(stripeSpacing);
+            p.stroke(colour);
+            p.noFill();
+            p.endShape();
+        }
+    }
+
     update(p: p5) {
         this.trail.push(this.pos.copy());
         if (this.trail.length > 30) {

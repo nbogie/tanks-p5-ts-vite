@@ -29,6 +29,7 @@ I chose vite because my older parcer 2 starter for p5.js with TypeScript wouldn'
 -   supply crates (that do nothing once shot open and collected!)
 -   minimap
 -   projectile kinds (initially: drunk & normal, eventually homing, though anything that's not deterministic from launch is currently problematic without network updates)
+-   add rainbow-trail projectile. (eventually will heal what it passes over.)
 
 minor additions:
 
@@ -41,6 +42,7 @@ minor additions:
 
 ### TODO:
 
+-   Rainbow projectile should heal what it passes over, and/or AoE splash healing on impact (for team, at least)
 -   FBM for the terrain rather than a single perlin noise layer
 -   firing recoil
 -   impacts jostle the recipient tank

@@ -14,6 +14,7 @@ import {
     drawProjectiles,
     emitProjectile,
     fireProjectile,
+    randomProjectileKind,
     updateProjectiles,
 } from './projectile';
 import { drawSky, setupSky, updateSky } from './sky';
@@ -24,7 +25,6 @@ import { Tank } from './tank';
 import { getCachedTanks } from './tanksCache';
 import {
     getWeaponSystem,
-    randomProjectileKind,
     setupWeaponSystem,
     updateWeaponSystem,
 } from './weaponSys';

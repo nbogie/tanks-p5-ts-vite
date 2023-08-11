@@ -1,10 +1,14 @@
 import p5 from 'p5';
+import { ProjectileKind } from './projectile';
+import { pick } from './utils';
 
 export interface WeaponSystem {
     getAmmoCount: () => number;
     hasAmmo: () => boolean;
     canFire: () => boolean;
     countFiring: () => void;
+    getProjectileKind: () => ProjectileKind;
+    setProjectileKind: (kind: ProjectileKind) => void;
     update: () => void;
 }
 
@@ -14,10 +18,16 @@ export function getWeaponSystem(): WeaponSystem {
     return weaponSystemGlobal;
 }
 
+export function randomProjectileKind(): ProjectileKind {
+    const choices: ProjectileKind[] = ['drunk', 'homing', 'normal'];
+    return pick(choices);
+}
+
 export function updateWeaponSystem(_p: p5): void {
     weaponSystemGlobal.update();
 }
 export function setupWeaponSystem(p: p5): void {
+    let projectileKind: ProjectileKind = 'drunk';
     let ammoCount = 5;
     let lastFiredMillis: number | null = null;
     let lastRegainAmmoMillis: number | null = null;
@@ -45,7 +55,12 @@ export function setupWeaponSystem(p: p5): void {
         lastFiredMillis = p.millis();
         lastRegainAmmoMillis = p.millis();
     }
-
+    function getProjectileKind() {
+        return projectileKind;
+    }
+    function setProjectileKind(newKind: ProjectileKind): void {
+        projectileKind = newKind;
+    }
     function update() {
         if (
             ammoCount < 5 &&
@@ -60,6 +75,8 @@ export function setupWeaponSystem(p: p5): void {
         getAmmoCount,
         hasAmmo,
         canFire,
+        getProjectileKind,
+        setProjectileKind,
         countFiring,
         update,
     };

@@ -22,7 +22,12 @@ import './style.css';
 import { drawSun } from './sun';
 import { Tank } from './tank';
 import { getCachedTanks } from './tanksCache';
-import { setupWeaponSystem, updateWeaponSystem } from './weaponSys';
+import {
+    getWeaponSystem,
+    randomProjectileKind,
+    setupWeaponSystem,
+    updateWeaponSystem,
+} from './weaponSys';
 import { setupSounds } from './sound';
 import { drawDebugHUD } from './debugHUD';
 
@@ -126,6 +131,9 @@ function keyPressed(_event: object | undefined, p: p5) {
     }
     if (p.key === 'm') {
         toggleConfig('shouldDrawMiniMap');
+    }
+    if (p.key === 'w') {
+        getWeaponSystem().setProjectileKind(randomProjectileKind());
     }
 }
 

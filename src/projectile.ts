@@ -18,20 +18,22 @@ import {
 } from './sound';
 
 let projectiles: Projectile[] = [];
-
+export type ProjectileKind = 'normal' | 'homing' | 'drunk';
 export class Projectile {
     pos: p5.Vector;
     vel: p5.Vector;
     acc: p5.Vector;
     trail: p5.Vector[];
+    kind: ProjectileKind;
     isDead: boolean;
 
-    constructor(pos: p5.Vector, vel: p5.Vector, p: p5) {
+    constructor(pos: p5.Vector, vel: p5.Vector, kind: ProjectileKind, p: p5) {
         const gravityVec = p.createVector(0, 0.4);
         this.pos = pos.copy();
         this.vel = p.createVector(vel.x, vel.y);
         this.acc = gravityVec;
         this.trail = [];
+        this.kind = kind;
         this.isDead = false;
     }
 
@@ -61,6 +63,10 @@ export class Projectile {
         if (this.trail.length > 30) {
             this.trail.shift();
         }
+        if (this.kind === 'drunk') {
+            this.acc.add(p5.Vector.random2D().mult(0.1));
+        }
+
         this.pos.add(this.vel);
         this.vel.add(this.acc);
         if (this.pos.dist(getPlayer().pos) < getPlayer().hitRadius) {
@@ -113,6 +119,7 @@ export function killProjectile(projectile: Projectile, _p: p5) {
 export interface ReceivedProjectile {
     pos: p5.Vector;
     vel: p5.Vector;
+    kind: ProjectileKind;
 }
 
 export function processReceivedProjectile(
@@ -122,6 +129,7 @@ export function processReceivedProjectile(
     const projectile = new Projectile(
         p.createVector(receivedProjectile.pos.x, receivedProjectile.pos.y),
         receivedProjectile.vel,
+        receivedProjectile.kind,
         p
     );
     getProjectiles().push(projectile);
@@ -132,6 +140,7 @@ export function emitProjectile(projectile: Projectile) {
     const b: ReceivedProjectile = {
         pos: projectile.pos,
         vel: projectile.vel,
+        kind: projectile.kind,
     };
     getSocket().emit('bulletFired', b);
 }
@@ -148,7 +157,8 @@ export function fireProjectile(p: p5) {
         turretCentrePos,
         p5.Vector.fromAngle(vel.heading(), 50)
     );
-    const projectile = new Projectile(firePos, vel, p);
+    const kind = getWeaponSystem().getProjectileKind();
+    const projectile = new Projectile(firePos, vel, kind, p);
     getProjectiles().push(projectile);
     // applyRecoilToPlayer(projectile);
 

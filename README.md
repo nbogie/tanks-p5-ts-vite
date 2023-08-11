@@ -28,6 +28,7 @@ I chose vite because my older parcer 2 starter for p5.js with TypeScript wouldn'
 -   stars in the dark part of the sky
 -   supply crates (that do nothing once shot open and collected!)
 -   minimap
+-   projectile kinds (initially: drunk & normal, eventually homing, though anything that's not deterministic from launch is currently problematic without network updates)
 
 minor additions:
 

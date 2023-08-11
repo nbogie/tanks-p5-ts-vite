@@ -132,7 +132,7 @@ function keyPressed(_event: object | undefined, p: p5) {
     if (p.key === 'm') {
         toggleConfig('shouldDrawMiniMap');
     }
-    if (p.key === 'w') {
+    if (p.key === 'r') {
         getWeaponSystem().setProjectileKind(randomProjectileKind());
     }
 }

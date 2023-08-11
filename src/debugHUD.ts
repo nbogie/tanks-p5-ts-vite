@@ -23,4 +23,5 @@ export function drawDebugHUD(p: p5) {
     );
     p.text('Weapon: ' + (getWeaponSystem().canFire() ? 'OK' : '...'), 100, 180);
     p.text('ammo: ' + '*'.repeat(getWeaponSystem().getAmmoCount()), 100, 210);
+    p.text('kind: ' + getWeaponSystem().getProjectileKind(), 100, 230);
 }

@@ -5,11 +5,12 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
+        "dev2": "yarn type-check && yarn lint && yarn format && yarn dev",
         "build": "tsc && vite build",
         "preview": "vite preview",
         "test": "vitest --no-watch src",
         "type-check": "tsc --noEmit",
-        "lint":"eslint --ext .ts src/",
+        "lint": "eslint --ext .ts src/",
         "type-check:watch": "tsc --noEmit --watch",
         "format": "prettier --write src/**/*.ts"
     },

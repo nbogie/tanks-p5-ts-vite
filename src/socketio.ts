@@ -1,27 +1,24 @@
 import p5 from 'p5';
 import { Socket, io } from 'socket.io-client';
-import { ReceivedProjectile, processReceivedBullet } from './projectile';
+import { ReceivedProjectile, processReceivedProjectile } from './projectile';
 import { ReceivedTank } from './tank';
 import { processReceivedTank } from './tanksCache';
 
 //https://socket.io/docs/v4/typescript/
-interface ServerToClientEvents {
-    newClientStart: () => void;
-    basicEmit: (a: number, b: string, c: Buffer) => void;
+interface SharedEvents {
     tankUpdate: (tankData: ReceivedTank) => void;
-    bulletFired: (bulletData: ReceivedProjectile) => void;
-
+    bulletFired: (receivedProjectile: ReceivedProjectile) => void;
+    newClientStart: () => void;
+}
+interface ServerToClientEvents extends SharedEvents {
+    // basicEmit: (a: number, b: string, c: Buffer) => void;
     // withAck: (d: string, callback: (e: number) => void) => void;
 }
-
-interface ClientToServerEvents {
-    newClientStart: () => void;
-    tankUpdate: (tankData: ReceivedTank) => void;
-    bulletFired: (bulletData: ReceivedProjectile) => void;
-}
+interface ClientToServerEvents extends SharedEvents {}
 
 let socket: Socket<ServerToClientEvents, ClientToServerEvents>;
 
+/** connect to socket.io server and register our listeners */
 export function setupSocketIO(p: p5) {
     socket = io('https://socketioserverc7demo.neillbogie.repl.co');
     registerSocketListeners(p);
@@ -33,8 +30,8 @@ function registerSocketListeners(p: p5) {
     socket.on('tankUpdate', (tankData: ReceivedTank) =>
         processReceivedTank(tankData, p)
     );
-    socket.on('bulletFired', (bulletData: ReceivedProjectile) =>
-        processReceivedBullet(bulletData, p)
+    socket.on('bulletFired', (receivedProjectile: ReceivedProjectile) =>
+        processReceivedProjectile(receivedProjectile, p)
     );
 }
 

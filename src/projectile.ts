@@ -144,10 +144,13 @@ export interface ReceivedProjectile {
     vel: p5.Vector;
 }
 
-export function processReceivedBullet(bullet: ReceivedProjectile, p: p5) {
+export function processReceivedProjectile(
+    receivedProjectile: ReceivedProjectile,
+    p: p5
+) {
     const projectile = new Projectile(
-        p.createVector(bullet.pos.x, bullet.pos.y),
-        bullet.vel,
+        p.createVector(receivedProjectile.pos.x, receivedProjectile.pos.y),
+        receivedProjectile.vel,
         p
     );
     getProjectiles().push(projectile);
@@ -155,10 +158,11 @@ export function processReceivedBullet(bullet: ReceivedProjectile, p: p5) {
 }
 
 export function emitProjectile(projectile: Projectile) {
-    getSocket().emit('bulletFired', {
+    const b: ReceivedProjectile = {
         pos: projectile.pos,
         vel: projectile.vel,
-    });
+    };
+    getSocket().emit('bulletFired', b);
 }
 
 export function fireProjectile(p: p5) {
@@ -199,14 +203,14 @@ export function maybeStartTrackingProjectileForAudio(
 }
 
 export function drawProjectiles(p: p5) {
-    for (const bullet of getProjectiles()) {
-        bullet.draw(p);
+    for (const projectile of getProjectiles()) {
+        projectile.draw(p);
     }
 }
 
 export function updateProjectiles(p: p5) {
-    for (const bullet of getProjectiles()) {
-        bullet.update(p);
+    for (const projectile of getProjectiles()) {
+        projectile.update(p);
     }
     updateProjectileSound(p);
     deleteProjectiles(p);
@@ -267,5 +271,5 @@ export function getProjectiles(): Projectile[] {
 }
 
 export function deleteProjectiles(_p: p5) {
-    projectiles = projectiles.filter((bullet) => !bullet.isDead);
+    projectiles = projectiles.filter((projectile) => !projectile.isDead);
 }

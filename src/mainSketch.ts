@@ -1,6 +1,6 @@
 import p5 from 'p5';
 import { generateCameraShakeVector, updateCamera } from './cameraShake';
-import { Cloud, drawClouds, setupClouds, updateClouds } from './clouds';
+import { drawClouds, setupClouds, updateClouds } from './clouds';
 import { getConfigValue, toggleConfig } from './config';
 import { drawDucks, setupDucks, updateDucks } from './ducks';
 import { drawDustParticles, updateDustParticles } from './dust';
@@ -36,8 +36,6 @@ let player: Tank;
 export const tankImgs: Record<string, p5.Image> = {};
 // export let turretImg: p5.Image;
 
-let clouds: Cloud[] = [];
-
 new p5(createSketch);
 
 function createSketch(p: p5) {
@@ -63,7 +61,7 @@ function createSketch(p: p5) {
         setupWeaponSystem(p);
         setupSounds(p);
         setupSky(p);
-        clouds = setupClouds(p);
+        setupClouds(p);
         setupPowerups(p);
         setupDucks(p);
     }
@@ -84,7 +82,7 @@ function createSketch(p: p5) {
         player.draw(p);
         drawProjectiles(p);
         drawExplosions(p);
-        drawClouds(clouds, p);
+        drawClouds(p);
         drawMiniMap(p);
         drawHUDText(p);
 
@@ -94,7 +92,7 @@ function createSketch(p: p5) {
         updateExplosions(p);
         updateDustParticles(p);
         updateCamera(p);
-        updateClouds(clouds, p);
+        updateClouds(p);
         updateSky(p);
         updateDucks(p);
         updateWeaponSystem(p);
@@ -102,11 +100,12 @@ function createSketch(p: p5) {
 
     function handleMousePressed() {
         if (p.mouseButton === p.LEFT) {
-            p.background('white');
+            //do stuff only on left mouse button
         }
     }
 
-    //Crucially, assign the setup and draw functions for the p5 createSketch.
+    //Crucially, assign the setup, draw (and other) functions for the p5 createSketch.
+    //mouse pressed /dragged is set up on the canvas, not the sketch
     p.setup = setup;
     p.draw = draw;
     p.preload = preload;

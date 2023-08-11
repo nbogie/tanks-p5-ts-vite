@@ -8,8 +8,10 @@ import { collect } from './utils';
 import { getPlayer } from './mainSketch';
 import { getPaletteColour } from './palette';
 
-export function setupClouds(p: p5): Cloud[] {
-    return collect(100, () => createCloud(p));
+let clouds: Cloud[] = [];
+
+export function setupClouds(p: p5): void {
+    clouds = collect(100, () => createCloud(p));
 }
 export interface Cloud {
     pos: p5.Vector;
@@ -63,7 +65,7 @@ export function createCloud(p: p5) {
     };
 }
 
-export function drawClouds(clouds: Cloud[], p: p5) {
+export function drawClouds(p: p5) {
     for (const cloud of clouds) {
         drawCloud(cloud, p);
     }
@@ -90,7 +92,7 @@ export function drawCloud(cloud: Cloud, p: p5) {
     p.pop();
 }
 
-export function updateClouds(clouds: Cloud[], p: p5) {
+export function updateClouds(p: p5) {
     for (const cloud of clouds) {
         updateCloud(cloud, p);
     }

@@ -33,9 +33,6 @@ const seed = 123;
 
 let player: Tank;
 
-export const tankImgs: Record<string, p5.Image> = {};
-// export let turretImg: p5.Image;
-
 new p5(createSketch);
 
 function createSketch(p: p5) {
@@ -162,19 +159,4 @@ function keyPressed(_event: object | undefined, p: p5) {
 
 export function getPlayer(): Tank {
     return player;
-}
-export function getTankImgFor(key: string): p5.Image {
-    return tankImgs[key];
-}
-
-// export function getTurretImg(): p5.Image {
-//     return turretImg;
-// }
-
-export function getRandomTankImgIx(p: p5) {
-    return p.random(Object.keys(tankImgs));
-}
-
-export function storeTankImageFor(key: string, imgToStore: p5.Image) {
-    tankImgs[key] = imgToStore;
 }

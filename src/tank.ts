@@ -3,14 +3,14 @@ import { worldPositionToScreenPosition } from './coordsUtils';
 import { fireDustParticle } from './dust';
 import { spawnExplosion } from './explosions';
 import { calcGroundAngle, calcGroundHeightAt } from './ground';
+import { getPlayer } from './mainSketch';
+import { Projectile } from './projectile';
 import {
-    getPlayer,
+    getImageFor,
     getRandomTankImgIx,
     getTankImgFor,
     storeTankImageFor,
-} from './mainSketch';
-import { Projectile } from './projectile';
-import { getImageFor } from './images';
+} from './images';
 import { getConfig } from './config';
 import { getSocket } from './socketio';
 

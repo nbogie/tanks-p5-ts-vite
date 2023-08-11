@@ -1,7 +1,8 @@
 import p5 from 'p5';
-import { tankImgs } from './mainSketch';
 
 const images: { [key: string]: p5.Image } = {}; //all other images
+const tankImgs: Record<string, p5.Image> = {};
+// export let turretImg: p5.Image;
 
 export function loadImages(p: p5) {
     for (let i = 0; i < 5; i++) {
@@ -30,4 +31,20 @@ export function loadImages(p: p5) {
 
 export function getImageFor(key: string): p5.Image {
     return images[key];
+}
+
+export function getTankImgFor(key: string): p5.Image {
+    return tankImgs[key];
+}
+
+// export function getTurretImg(): p5.Image {
+//     return turretImg;
+// }
+
+export function getRandomTankImgIx(p: p5) {
+    return p.random(Object.keys(tankImgs));
+}
+
+export function storeTankImageFor(key: string, imgToStore: p5.Image) {
+    tankImgs[key] = imgToStore;
 }

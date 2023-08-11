@@ -6,7 +6,7 @@ import p5 from 'p5';
 // https://tonejs.github.io/docs/14.7.77/Oscillator.html#frequency
 import * as Tone from 'tone';
 
-import { getPlayer, getSocket } from './mainSketch';
+import { getPlayer } from './mainSketch';
 import { shakeCamera } from './cameraShake';
 import { getPowerups, powerupTakeDamage } from './powerups';
 import { duckTakeDamage, getDucks } from './ducks';
@@ -16,6 +16,7 @@ import { spawnExplosion } from './explosions';
 import { worldPositionToScreenPosition } from './coordsUtils';
 import { getImageFor } from './images';
 import { getWeaponSystem } from './weaponSys';
+import { getSocket } from './socketio';
 
 let projectiles: Projectile[] = [];
 

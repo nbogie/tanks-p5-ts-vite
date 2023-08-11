@@ -6,13 +6,13 @@ import { calcGroundAngle, calcGroundHeightAt } from './ground';
 import {
     getPlayer,
     getRandomTankImgIx,
-    getSocket,
     getTankImgFor,
     storeTankImageFor,
 } from './mainSketch';
 import { Projectile } from './projectile';
 import { getImageFor } from './images';
 import { getConfig } from './config';
+import { getSocket } from './socketio';
 
 export interface ReceivedTank {
     pos: p5.Vector;

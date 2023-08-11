@@ -1,8 +1,9 @@
 import p5 from 'p5';
-import { getCachedTanks, getPlayer } from './mainSketch';
+import { getPlayer } from './mainSketch';
 import { getDucks } from './ducks';
 import { getPowerups } from './powerups';
 import { getConfig, getConfigValue } from './config';
+import { getCachedTanks } from './tanksCache';
 
 const minimapConfig = {
     width: 300,

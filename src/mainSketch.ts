@@ -1,59 +1,37 @@
 import p5 from 'p5';
-import { Socket, io } from 'socket.io-client';
 import { generateCameraShakeVector, updateCamera } from './cameraShake';
 import { Cloud, drawClouds, setupClouds, updateClouds } from './clouds';
+import { getConfigValue, toggleConfig } from './config';
 import { drawDucks, setupDucks, updateDucks } from './ducks';
 import { drawDustParticles, updateDustParticles } from './dust';
 import { drawExplosions, updateExplosions } from './explosions';
 import { drawGround } from './ground';
 import { loadImages } from './images';
+import { drawMiniMap } from './minimap';
 import { setupPalette } from './palette';
 import { drawPowerups, setupPowerups, updatePowerups } from './powerups';
 import {
-    ReceivedProjectile,
     drawProjectiles,
     emitProjectile,
     fireProjectile,
-    processReceivedBullet,
     setupProjectileSounds,
     updateProjectiles,
 } from './projectile';
 import { drawSky, setupSky, updateSky } from './sky';
+import { setupSocketIO } from './socketio';
 import './style.css';
 import { drawSun } from './sun';
-import { ReceivedTank, Tank } from './tank';
+import { Tank } from './tank';
+import { getCachedTankKeys, getCachedTanks } from './tanksCache';
 import {
     getWeaponSystem,
     setupWeaponSystem,
     updateWeaponSystem,
 } from './weaponSys';
-import { drawMiniMap } from './minimap';
-import { getConfigValue, toggleConfig } from './config';
-
-//https://socket.io/docs/v4/typescript/
-interface ServerToClientEvents {
-    newClientStart: () => void;
-    basicEmit: (a: number, b: string, c: Buffer) => void;
-    tankUpdate: (tankData: ReceivedTank) => void;
-    bulletFired: (bulletData: ReceivedProjectile) => void;
-
-    // withAck: (d: string, callback: (e: number) => void) => void;
-}
-
-interface ClientToServerEvents {
-    newClientStart: () => void;
-    tankUpdate: (tankData: ReceivedTank) => void;
-    bulletFired: (bulletData: ReceivedProjectile) => void;
-}
-
-const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(
-    'https://socketioserverc7demo.neillbogie.repl.co'
-);
 
 const seed = 123;
 
 let player: Tank;
-const cachedTanks: Tank[] = [];
 
 export const tankImgs: Record<string, p5.Image> = {};
 // export let turretImg: p5.Image;
@@ -80,8 +58,7 @@ function createSketch(p: p5) {
         //not quite guaranteed unique but it'll do for now
         const myId = p.floor(p.random(Number.MAX_SAFE_INTEGER));
         player = new Tank(p.random(100, 500), 300, myId, p);
-
-        registerSocketListeners(p);
+        setupSocketIO(p);
         setupPalette();
         setupWeaponSystem(p);
         setupSounds(p);
@@ -98,7 +75,7 @@ function createSketch(p: p5) {
         drawSun(p);
         drawDucks(p);
         drawGround(p);
-        for (const cTank of Object.values(cachedTanks)) {
+        for (const cTank of getCachedTanks()) {
             cTank.draw(p);
         }
 
@@ -141,20 +118,11 @@ function setupSounds(p: p5) {
     setupProjectileSounds(p);
 }
 
-function registerSocketListeners(p: p5) {
-    socket.on('newClientStart', () => {});
-    socket.emit('newClientStart');
-    socket.on('tankUpdate', (tankData) => processReceivedTank(tankData, p));
-    socket.on('bulletFired', (bulletData) =>
-        processReceivedBullet(bulletData, p)
-    );
-}
-
 function drawHUDText(p: p5) {
     p.textSize(20);
     p.text(
         'Cached tank ids: ' +
-            Object.keys(cachedTanks)
+            getCachedTankKeys()
                 .map((id: string) => '...' + id.slice(-4))
                 .join(', '),
         100,
@@ -192,33 +160,12 @@ function keyPressed(_event: object | undefined, p: p5) {
         toggleConfig('shouldDrawMiniMap');
     }
 }
-function processReceivedTank(receivedTank: ReceivedTank, p: p5) {
-    if (!(receivedTank.id in cachedTanks)) {
-        const newTank = new Tank(
-            receivedTank.pos.x,
-            receivedTank.pos.y,
-            receivedTank.id,
-            p
-        );
-        cachedTanks[receivedTank.id] = newTank;
-    }
-    const cachedTank = cachedTanks[receivedTank.id];
-    cachedTank.updateFromReceivedTank(receivedTank);
-}
 
 export function getPlayer(): Tank {
     return player;
 }
-
-export function getSocket() {
-    return socket;
-}
 export function getTankImgFor(key: string): p5.Image {
     return tankImgs[key];
-}
-
-export function getCachedTanks(): Tank[] {
-    return Object.values(cachedTanks);
 }
 
 // export function getTurretImg(): p5.Image {

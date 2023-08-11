@@ -1,10 +1,10 @@
 import p5 from 'p5';
 import { worldPositionToScreenPosition } from './coordsUtils';
 import { calcGroundHeightAt } from './ground';
-import { getConfig } from './mainSketch';
 import { Projectile } from './projectile';
 import { collect } from './utils';
 import { getImageFor } from './images';
+import { getConfig } from './config';
 
 //assets from https://www.kenney.nl/assets/shooting-gallery
 let ducks: Duck[];

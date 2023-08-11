@@ -1,7 +1,8 @@
 import p5 from 'p5';
-import { getCachedTanks, getConfig, getPlayer } from './mainSketch';
+import { getCachedTanks, getPlayer } from './mainSketch';
 import { getDucks } from './ducks';
 import { getPowerups } from './powerups';
+import { getConfig, getConfigValue } from './config';
 
 const minimapConfig = {
     width: 300,
@@ -33,6 +34,9 @@ function drawMiniMapChrome(p: p5) {
 }
 
 export function drawMiniMap(p: p5) {
+    if (!getConfigValue('shouldDrawMiniMap')) {
+        return;
+    }
     p.push();
     p.translate(400, p.height - minimapConfig.height);
     drawMiniMapChrome(p);

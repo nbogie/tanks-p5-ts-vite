@@ -44,7 +44,7 @@ minor additions:
 -   firing recoil
 -   impacts jostle the recipient tank
 -   parallax clouds and distant hills
--   minimap
+-   arrows pointing in direction of other tank(s) when they're offscreen
 
 ### Credits
 

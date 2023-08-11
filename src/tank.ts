@@ -4,7 +4,6 @@ import { fireDustParticle } from './dust';
 import { spawnExplosion } from './explosions';
 import { calcGroundAngle, calcGroundHeightAt } from './ground';
 import {
-    getConfig,
     getPlayer,
     getRandomTankImgIx,
     getSocket,
@@ -13,6 +12,7 @@ import {
 } from './mainSketch';
 import { Projectile } from './projectile';
 import { getImageFor } from './images';
+import { getConfig } from './config';
 
 export interface ReceivedTank {
     pos: p5.Vector;

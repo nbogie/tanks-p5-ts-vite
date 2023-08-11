@@ -23,13 +23,7 @@ import { drawSun } from './sun';
 import { ReceivedTank, Tank } from './tank';
 import { WeaponSystem, setupWeaponSystem } from './weaponSys';
 import { drawMiniMap } from './minimap';
-const config = {
-    shouldTransmit: false,
-    includeDucks: true,
-    includePowerups: true,
-    shouldDrawMiniMapCoords: true,
-};
-
+import { getConfigValue, toggleConfig } from './config';
 const socket = io('https://socketioserverc7demo.neillbogie.repl.co');
 
 const seed = 123;
@@ -145,7 +139,9 @@ function drawHUDText(p: p5) {
         120
     );
     p.text(
-        config.shouldTransmit ? 'transmit is on (t)' : 'transmit is off (t)',
+        getConfigValue('shouldTransmit')
+            ? 'transmit is on (t)'
+            : 'transmit is off (t)',
         100,
         150
     );
@@ -165,7 +161,13 @@ function keyPressed(_event: object | undefined, p: p5) {
         }
     }
     if (p.key === 't') {
-        config.shouldTransmit = !config.shouldTransmit;
+        toggleConfig('shouldTransmit');
+    }
+    if (p.key === 'c') {
+        toggleConfig('shouldDrawMiniMapCoords');
+    }
+    if (p.key === 'm') {
+        toggleConfig('shouldDrawMiniMap');
     }
 }
 function processReceivedTank(receivedTank: ReceivedTank, p: p5) {
@@ -184,11 +186,6 @@ function processReceivedTank(receivedTank: ReceivedTank, p: p5) {
 
 export function getPlayer(): Tank {
     return player;
-}
-
-type Config = typeof config;
-export function getConfig(): Config {
-    return config;
 }
 
 export function getSocket() {

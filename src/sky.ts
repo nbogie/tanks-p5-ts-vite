@@ -33,12 +33,19 @@ export function createStar(p: p5) {
 }
 
 export function drawSky(p: p5) {
+    p.push();
     p.background(40);
     if (darknessRemaining) {
         return;
     }
+    drawGradientSky(p);
+    drawStars(p);
+    p.pop();
+}
 
+function drawGradientSky(p: p5) {
     p.push();
+    p.rectMode(p.CORNER);
     p.colorMode(p.RGB);
     const stripeHeight = 3;
     for (let y = 0; y < p.height; y += stripeHeight) {
@@ -48,7 +55,6 @@ export function drawSky(p: p5) {
         p.rect(0, y, p.width, y + stripeHeight);
     }
     p.pop();
-    drawStars(p);
 }
 
 export function drawStars(p: p5) {

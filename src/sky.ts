@@ -41,11 +41,11 @@ export function drawSky(p: p5) {
     if (darknessRemaining) {
         return;
     }
-    if (p.frameCount > 1) {
+    if (p.frameCount === 1) {
+        drawGradientSky(myOffscreen);
+    } else {
         p.imageMode(p.CORNER);
         p.image(myOffscreen, 0, 0);
-    } else {
-        drawGradientSky(myOffscreen);
     }
     drawStars(p);
     p.pop();

@@ -4,6 +4,8 @@ import { ReceivedProjectile, processReceivedProjectile } from './projectile';
 import { ReceivedTank } from './tank';
 import { processReceivedTank } from './tanksCache';
 
+let socket: Socket<ServerToClientEvents, ClientToServerEvents>;
+
 //https://socket.io/docs/v4/typescript/
 interface SharedEvents {
     tankUpdate: (tankData: ReceivedTank) => void;
@@ -15,8 +17,6 @@ interface ServerToClientEvents extends SharedEvents {
     // withAck: (d: string, callback: (e: number) => void) => void;
 }
 interface ClientToServerEvents extends SharedEvents {}
-
-let socket: Socket<ServerToClientEvents, ClientToServerEvents>;
 
 /** connect to socket.io server and register our listeners */
 export function setupSocketIO(p: p5) {

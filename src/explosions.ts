@@ -1,6 +1,7 @@
 import p5 from 'p5';
 import { calcGroundAngle, calcGroundHeightAt } from './ground';
 import { worldPositionToScreenPosition } from './coordsUtils';
+import { rainbowColours } from './colourUtils';
 
 let explosions: Explosion[] = [];
 
@@ -20,7 +21,8 @@ export type TerrainTypeForExplosion =
     | 'ground'
     | 'tank'
     | 'crateOpened'
-    | 'crateClosed';
+    | 'crateClosed'
+    | 'rainbow';
 export function getPaletteForTerrainImpact(
     terrainType: TerrainTypeForExplosion
 ) {
@@ -29,6 +31,7 @@ export function getPaletteForTerrainImpact(
         tank: [100, 150, 200, 'orange', 'tomato'],
         crateOpened: [100, 150],
         crateClosed: ['rgb(197,122,44)', 'rgb(216,179,128)'],
+        rainbow: rainbowColours,
     };
     return lookup[terrainType];
 }

@@ -26,3 +26,13 @@ export function lerpColours(
         (overallFraction % colourStopDist) / colourStopDist;
     return p.lerpColor(c1, c2, fracBetweenC1AndC2);
 }
+
+export const rainbowColours = [
+    'red',
+    'orange',
+    'yellow',
+    'lime',
+    'dodgerblue',
+    'indigo',
+    'violet',
+];

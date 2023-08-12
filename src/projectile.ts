@@ -17,6 +17,7 @@ import {
     updateProjectileSound,
 } from './sound';
 import { pick } from './utils';
+import { rainbowColours } from './colourUtils';
 
 let projectiles: Projectile[] = [];
 export type ProjectileKind = 'normal' | 'rainbow' | 'drunk';
@@ -69,15 +70,6 @@ export class Projectile {
         p.endShape();
     }
     drawRainbowTrail(p: p5) {
-        const rainbowColours = [
-            'red',
-            'orange',
-            'yellow',
-            'lime',
-            'dodgerblue',
-            'indigo',
-            'violet',
-        ];
         p.push();
 
         const stripeSpacing = 5;
@@ -118,7 +110,8 @@ export class Projectile {
             shakeCamera();
             darkenSky();
             killProjectile(this, p);
-            spawnExplosion(this.pos, this.vel, 'tank', p);
+            const terrainType = this.kind === 'rainbow' ? 'rainbow' : 'tank';
+            spawnExplosion(this.pos, this.vel, terrainType, p);
         }
 
         for (const pup of getPowerups()) {
@@ -148,7 +141,7 @@ export class Projectile {
             spawnExplosion(
                 p.createVector(this.pos.x, groundY - 5),
                 this.vel,
-                'ground',
+                this.kind === 'rainbow' ? 'rainbow' : 'ground',
                 p
             );
         }

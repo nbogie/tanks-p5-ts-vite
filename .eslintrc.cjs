@@ -12,7 +12,7 @@ module.exports = {
     },
     plugins: ['@typescript-eslint'],
     rules: {
-        '@typescript-eslint/no-unused-vars': 0,
+        '@typescript-eslint/no-unused-vars': 0, //let ts deal with that
         'no-debugger': 0,
     },
 };

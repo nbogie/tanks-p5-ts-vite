@@ -19,7 +19,7 @@ export function drawDebugHUD(p: p5) {
                 .map((id: string) => '...' + id.slice(-4))
                 .join(', '),
 
-        'cached tanks: ' + getCachedTankKeys.length,
+        'cached tanks: ' + getCachedTankKeys().length,
         getConfigValue('shouldTransmit')
             ? 'transmit is on (t)'
             : 'transmit is off (t)',

@@ -44,6 +44,11 @@ minor additions:
 
 ### TODO:
 
+-   Make CTF work multi-player. Only one person can have each flag, etc.
+-   more power-ups. mines?
+-   slower speed until powered-up
+-   destroying an enemy tank should give boons, and be fun
+-   destroying ducks should give boons or points, and be fun
 -   Rainbow projectile should heal what it passes over, and/or AoE splash healing on impact (for team, at least)
 -   firing recoil
 -   impacts jostle the recipient tank

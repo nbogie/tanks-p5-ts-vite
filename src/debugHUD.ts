@@ -4,6 +4,7 @@ import { getCachedTankKeys } from './tanksCache';
 import { getWeaponSystem } from './weaponSys';
 import { getScoreForTeam } from './flags';
 import { getPlayer } from './player';
+import { getProjectiles } from './projectile';
 
 /** draw various bits of text to the canvas, to help debugging */
 export function drawDebugHUD(p: p5) {
@@ -30,6 +31,7 @@ export function drawDebugHUD(p: p5) {
             getScoreForTeam('red') +
             ', blue: ' +
             getScoreForTeam('blue'),
+        'projectile count: ' + getProjectiles().length,
     ];
     linesToLog.forEach((line, ix) => p.text(line, p.width - 200, 20 + ix * 30));
     p.pop();

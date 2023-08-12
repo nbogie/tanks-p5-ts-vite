@@ -6,7 +6,8 @@ const cachedTanks: { [tankId: string]: Tank } = {};
 const disconnectedTankTimeoutSec = 10;
 
 export function processReceivedTank(receivedTank: ReceivedTank, p: p5) {
-    if (!(receivedTank.id in cachedTanks)) {
+    let cachedTank = cachedTanks[receivedTank.id];
+    if (!cachedTank) {
         const newTank = new Tank(
             receivedTank.pos.x,
             receivedTank.pos.y,
@@ -16,8 +17,9 @@ export function processReceivedTank(receivedTank: ReceivedTank, p: p5) {
         );
 
         cachedTanks[receivedTank.id] = newTank;
+        cachedTank = newTank;
     }
-    const cachedTank = cachedTanks[receivedTank.id];
+
     cachedTank.updateFromReceivedTank(receivedTank, p);
 }
 

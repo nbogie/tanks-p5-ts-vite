@@ -30,6 +30,8 @@ I chose vite because my older parcer 2 starter for p5.js with TypeScript wouldn'
 -   minimap
 -   projectile kinds (initially: drunk & normal, eventually homing, though anything that's not deterministic from launch is currently problematic without network updates)
 -   add rainbow-trail projectile. (eventually will heal what it passes over.)
+-   added FBM for the terrain rather than a single perlin noise layer - optional with 'b'. It's not better for gameplay.
+-   parallax clouds
 
 minor additions:
 
@@ -43,10 +45,9 @@ minor additions:
 ### TODO:
 
 -   Rainbow projectile should heal what it passes over, and/or AoE splash healing on impact (for team, at least)
--   FBM for the terrain rather than a single perlin noise layer
 -   firing recoil
 -   impacts jostle the recipient tank
--   parallax clouds and distant hills
+-   parallax distant hills
 -   arrows pointing in direction of other tank(s) when they're offscreen
 
 ### Credits

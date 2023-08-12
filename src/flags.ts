@@ -1,9 +1,9 @@
 import p5 from 'p5';
-import { Tank, TankId } from './tank';
-import { calcGroundHeightAt } from './ground';
 import { worldPositionToScreenPosition } from './coordsUtils';
-import { getPlayer } from './mainSketch';
+import { calcGroundHeightAt } from './ground';
 import { getImageFor } from './images';
+import { getPlayer } from './mainSketch';
+import { TankId, getTankById } from './tank';
 const flagStartDist = 1000;
 const goalStartDist = flagStartDist * 2;
 
@@ -80,14 +80,14 @@ function flagStartPoint(teamColour: TeamColour) {
     return p.createVector(x, y);
 }
 
-export function goalPosition(teamColour: TeamColour) {
+function goalPosition(teamColour: TeamColour) {
     const p = getP5();
     const x = teamColour === 'red' ? -goalStartDist : goalStartDist;
     const y = calcGroundHeightAt(x, p);
     return p.createVector(x, y);
 }
 
-export function createFlag(teamColour: TeamColour) {
+function createFlag(teamColour: TeamColour) {
     const p = getP5();
     return {
         animFrame: p.random([0, 1]),
@@ -130,19 +130,7 @@ function drawGoal(goal: Goal) {
     p.pop();
 }
 
-export function getTankById(soughtId: TankId): Tank | null {
-    if (soughtId === undefined || soughtId === null) {
-        return null;
-    }
-    const player = getPlayer();
-    if (soughtId === player.id) {
-        return player;
-    } else {
-        return getTankById(soughtId) ?? null;
-    }
-}
-
-export function computeFlagPosAndCarryingTank(flag: Flag) {
+function computeFlagPosAndCarryingTank(flag: Flag) {
     const p = getP5();
     const carryingTank = flag.idOfCarryingTank
         ? getTankById(flag.idOfCarryingTank)
@@ -163,8 +151,11 @@ export function computeFlagPosAndCarryingTank(flag: Flag) {
         };
     }
 }
+export function getOppositeTeamColour(teamColour: TeamColour): TeamColour {
+    return teamColour === 'red' ? 'blue' : 'red';
+}
 
-export function drawFlag(flag: Flag) {
+function drawFlag(flag: Flag) {
     const p = getP5();
     p.push();
     const { pos, carryingTank } = computeFlagPosAndCarryingTank(flag);
@@ -186,7 +177,7 @@ export function updateFlags() {
     updateFlag(blueFlag);
 }
 
-export function moveFreeFlagByVelocity(flag: Flag) {
+function moveFreeFlagByVelocity(flag: Flag) {
     const p = getP5();
     flag.vel.add(p.createVector(0, 0.2));
     flag.pos.add(flag.vel);
@@ -197,7 +188,7 @@ export function moveFreeFlagByVelocity(flag: Flag) {
     }
 }
 
-export function updateFlag(flag: Flag) {
+function updateFlag(flag: Flag) {
     if (getP5().frameCount % 20 === 0) {
         flag.animFrame = ((flag.animFrame + 1) % 2) as 0 | 1;
     }
@@ -207,7 +198,7 @@ export function updateFlag(flag: Flag) {
         const collidingEnemyTank = findCollidingTankOfTeam(
             flag.pos,
             flag.hitRadius,
-            flag.teamColour
+            getOppositeTeamColour(flag.teamColour)
         );
         if (collidingEnemyTank) {
             flag.idOfCarryingTank = collidingEnemyTank.id;
@@ -221,21 +212,21 @@ export function updateFlag(flag: Flag) {
     }
 }
 
-export function isFlagAtDestination(flag: Flag) {
+function isFlagAtDestination(flag: Flag) {
     const goal = getGoalForFlag(flag);
     return flag.pos.dist(goal.pos) < goal.hitRadius;
 }
 
-export function scoreFlag(flag: Flag) {
+function scoreFlag(flag: Flag) {
     const p = getP5();
-    const scorerTeam = flag.teamColour === 'red' ? 'blue' : 'red';
+    const scorerTeam = getOppositeTeamColour(flag.teamColour);
     scores[scorerTeam]++;
     flag.pos = flagStartPoint(flag.teamColour);
     flag.idOfCarryingTank = null;
     flag.vel = p5.Vector.fromAngle(-p.PI / 2 + p.random(-0.2, 0.2), 10);
 }
 
-export function findCollidingTankOfTeam(
+function findCollidingTankOfTeam(
     pos: p5.Vector,
     hitRadius: number,
     soughtTeamColour: TeamColour
@@ -248,7 +239,7 @@ export function findCollidingTankOfTeam(
     );
 }
 
-export function dropFlag(flag: Flag) {
+function dropFlag(flag: Flag) {
     const p = getP5();
     if (flag.idOfCarryingTank) {
         const carryingTank = getTankById(flag.idOfCarryingTank);

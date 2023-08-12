@@ -308,3 +308,15 @@ function makeAndCacheWhiteImageIfNecessary(
     }
     return getTankImgOrFail(teamColour, keyForWhite);
 }
+
+export function getTankById(soughtId: TankId): Tank | null {
+    if (soughtId === undefined || soughtId === null) {
+        return null;
+    }
+    const player = getPlayer();
+    if (soughtId === player.id) {
+        return player;
+    } else {
+        return getTankById(soughtId) ?? null;
+    }
+}

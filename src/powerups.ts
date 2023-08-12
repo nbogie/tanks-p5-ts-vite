@@ -6,14 +6,25 @@ import { collect } from './utils';
 import { getImageFor } from './images';
 import { getConfig } from './config';
 import { getPlayer } from './player';
-import { IDeletable, IDrawable, IPosition, IUpdatable } from './entities';
+import {
+    IDeletable,
+    IDrawable,
+    IEntType,
+    IPosition,
+    IUpdatable,
+} from './entities';
 
 let powerups: Powerup[];
 
 const powerupKinds: PowerupKind[] = ['armor', 'ammo', 'repair'];
 
 type PowerupKind = 'armor' | 'ammo' | 'repair';
-export interface Powerup extends IDrawable, IUpdatable, IDeletable, IPosition {
+export interface Powerup
+    extends IDrawable,
+        IUpdatable,
+        IDeletable,
+        IPosition,
+        IEntType {
     entType: 'powerup';
     vel: p5.Vector;
     kind: PowerupKind;

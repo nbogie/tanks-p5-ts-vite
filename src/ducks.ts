@@ -5,6 +5,7 @@ import {
     Entity,
     IDeletable,
     IDrawable,
+    IEntType,
     IPosition,
     IUpdatable,
     addEntities,
@@ -18,8 +19,12 @@ import { collect } from './utils';
 //assets from https://www.kenney.nl/assets/shooting-gallery
 type DuckKind = 1 | 2 | 3;
 
-export interface Duck extends IDrawable, IUpdatable, IDeletable, IPosition {
-    entType: 'duck';
+export interface Duck
+    extends IDrawable,
+        IUpdatable,
+        IDeletable,
+        IPosition,
+        IEntType {
     originalPos: p5.Vector;
     motion: 'horizontal' | 'vertical' | 'none';
     vel: p5.Vector;

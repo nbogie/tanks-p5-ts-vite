@@ -1,10 +1,29 @@
 import p5 from 'p5';
-import { calcGroundHeightAt } from './ground';
 import { worldPositionToScreenPosition } from './coordsUtils';
+import {
+    IDrawable,
+    IEntType,
+    ILife,
+    IPosition,
+    IUpdatable,
+    IVelocity,
+    addEntities,
+} from './entities';
+import { calcGroundHeightAt } from './ground';
 import { getPaletteColour } from './palette';
 
-let dustParticles: DustParticle[] = [];
-
+export interface DustParticle
+    extends IUpdatable,
+        IVelocity,
+        IDrawable,
+        IPosition,
+        ILife,
+        IEntType {
+    size: number;
+    rotation: number;
+    rotationSpeed: number;
+    colour: string;
+}
 export function fireDustParticle(
     srcPos: p5.Vector,
     srcSpeed: number,
@@ -15,26 +34,17 @@ export function fireDustParticle(
         bodyAngle /*  + random(-0.1, 0.1) */,
         p.abs(srcSpeed * 3)
     );
-    dustParticles.push(
-        createDustParticle(p5.Vector.random2D().mult(10).add(srcPos), vel, p)
-    );
-}
-
-interface DustParticle {
-    pos: p5.Vector;
-    vel: p5.Vector;
-    size: number;
-    rotation: number;
-    rotationSpeed: number;
-    colour: string;
-    life: number;
+    addEntities([
+        createDustParticle(p5.Vector.random2D().mult(10).add(srcPos), vel, p),
+    ]);
 }
 export function createDustParticle(
     pos: p5.Vector,
     vel: p5.Vector,
     p: p5
 ): DustParticle {
-    return {
+    const particle: DustParticle = {
+        entType: 'dustParticle',
         pos: pos.copy(),
         vel: vel.copy(),
         size: p.random(3, 8),
@@ -42,20 +52,10 @@ export function createDustParticle(
         rotationSpeed: p.random(-0.2, 0.2),
         colour: getPaletteColour(p.random(['grass', 'dirt', 'dust'])),
         life: 100,
+        draw: (p: p5) => drawDustParticle(particle, p),
+        update: (p: p5) => updateDustParticle(particle, p),
     };
-}
-
-export function drawDustParticles(p: p5) {
-    for (const dp of dustParticles) {
-        drawDustParticle(dp, p);
-    }
-}
-
-export function updateDustParticles(p: p5) {
-    for (const dp of dustParticles) {
-        updateDustParticle(dp, p);
-    }
-    dustParticles = dustParticles.filter((dp) => dp.life > 0);
+    return particle;
 }
 
 export function updateDustParticle(particle: DustParticle, p: p5) {

@@ -4,7 +4,6 @@ import { drawClouds, setupClouds, updateClouds } from './clouds';
 import { toggleConfig } from './config';
 import { drawDebugHUD } from './debugHUD';
 import { setupDucks } from './ducks';
-import { drawDustParticles, updateDustParticles } from './dust';
 import { drawEntities, updateEntities } from './entities';
 import { drawExplosions, updateExplosions } from './explosions';
 import {
@@ -83,7 +82,6 @@ function createSketch(p: p5) {
             cTank.draw(p);
         }
 
-        drawDustParticles(p);
         getPlayer().draw(p);
         drawProjectiles(p);
         drawExplosions(p);
@@ -96,7 +94,6 @@ function createSketch(p: p5) {
 
         updateProjectiles(p);
         updateExplosions(p);
-        updateDustParticles(p);
         updateCamera(p);
         updateClouds(p);
         updateSky(p);
@@ -120,7 +117,6 @@ function createSketch(p: p5) {
 }
 
 function keyPressed(_event: object | undefined, p: p5) {
-    // console.log("key pressed: ", { event, p });
     if (p.key === ' ') {
         if (getPlayer().isDead) {
             return;

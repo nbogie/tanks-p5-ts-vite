@@ -30,7 +30,13 @@ import {
 } from './weaponSys';
 import { setupSounds } from './sound';
 import { drawDebugHUD } from './debugHUD';
-import { allTeamColours, drawFlags, setupFlags } from './flags';
+import {
+    allTeamColours,
+    drawFlags,
+    dropFlagIfPlayerCarrying,
+    setupFlags,
+    updateFlags,
+} from './flags';
 import { pick } from './utils';
 
 const seed = 123;
@@ -99,6 +105,7 @@ function createSketch(p: p5) {
         updateClouds(p);
         updateSky(p);
         updateDucks(p);
+        updateFlags();
         updateWeaponSystem(p);
     }
 
@@ -139,6 +146,9 @@ function keyPressed(_event: object | undefined, p: p5) {
     }
     if (p.key === 'r') {
         getWeaponSystem().setProjectileKind(randomProjectileKind());
+    }
+    if (p.key === 'f') {
+        dropFlagIfPlayerCarrying();
     }
 }
 

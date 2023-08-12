@@ -4,6 +4,7 @@ import { getDucks } from './ducks';
 import { getPowerups } from './powerups';
 import { getConfig, getConfigValue } from './config';
 import { getCachedTanks } from './tanksCache';
+import { getRedFlag, getBlueFlag } from './flags';
 
 const minimapConfig = {
     width: 300,
@@ -51,7 +52,19 @@ export function drawMiniMap(p: p5) {
         },
         {
             collection: getCachedTanks(),
-            colour: 'tomato',
+            colour: 'yellow',
+        },
+        {
+            collection: [getRedFlag()],
+            colour: 'red',
+        },
+        {
+            collection: [getBlueFlag()],
+            colour: 'dodgerblue',
+        },
+        {
+            collection: [getPlayer()],
+            colour: 'white',
         },
     ];
 

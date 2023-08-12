@@ -4,6 +4,8 @@ import { calcGroundHeightAt } from './ground';
 import { worldPositionToScreenPosition } from './coordsUtils';
 import { getPlayer } from './mainSketch';
 import { getImageFor } from './images';
+const flagStartDist = 1000;
+const goalStartDist = flagStartDist * 2;
 
 let redFlag: Flag;
 let blueFlag: Flag;
@@ -32,6 +34,7 @@ export const allTeamColours: TeamColour[] = ['red', 'blue'];
 
 export function setupFlags(p: p5) {
     _cachedP5 = p;
+
     redFlag = createFlag('red');
     blueFlag = createFlag('blue');
 
@@ -72,14 +75,14 @@ function getGoalForFlag(flag: Flag) {
 
 function flagStartPoint(teamColour: TeamColour) {
     const p = getP5();
-    const x = teamColour === 'red' ? -2000 : 2000;
+    const x = teamColour === 'red' ? -flagStartDist : flagStartDist;
     const y = calcGroundHeightAt(x, p) - 30;
     return p.createVector(x, y);
 }
 
 export function goalPosition(teamColour: TeamColour) {
     const p = getP5();
-    const x = teamColour === 'red' ? -4000 : 4000;
+    const x = teamColour === 'red' ? -goalStartDist : goalStartDist;
     const y = calcGroundHeightAt(x, p);
     return p.createVector(x, y);
 }

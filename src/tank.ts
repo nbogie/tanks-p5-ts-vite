@@ -1,26 +1,30 @@
 import p5 from 'p5';
+import { getConfig } from './config';
 import { worldPositionToScreenPosition } from './coordsUtils';
 import { fireDustParticle } from './dust';
 import { spawnExplosion } from './explosions';
+import { TeamColour, dropFlagIfPlayerCarrying } from './flags';
 import { calcGroundAngle, calcGroundHeightAt } from './ground';
-import { getPlayer } from './mainSketch';
-import { Projectile } from './projectile';
 import {
     getImageFor,
     getRandomTankImgIx,
-    getTankImgFor,
+    getTankImg,
+    getTankImgOrFail,
     storeTankImageFor,
 } from './images';
-import { getConfig } from './config';
+import { getPlayer } from './mainSketch';
+import { Projectile } from './projectile';
 import { getSocket } from './socketio';
+export type TankId = number;
 
 export interface ReceivedTank {
     pos: p5.Vector;
-    id: number;
+    id: TankId;
+    teamColour: TeamColour;
 }
 
 export class Tank {
-    id: number;
+    id: TankId;
     pos: p5.Vector;
     vel: p5.Vector;
     isFacingRight: boolean;
@@ -33,8 +37,15 @@ export class Tank {
     damageDisplay: number;
     hitRadius: number;
     isDead: boolean;
+    teamColour: TeamColour;
 
-    constructor(x: number, y: number, id: number, p: p5) {
+    constructor(
+        x: number,
+        y: number,
+        id: number,
+        teamColour: TeamColour,
+        p: p5
+    ) {
         this.id = id;
         this.pos = p.createVector(x, y);
         this.vel = p.createVector(0, 1);
@@ -48,6 +59,7 @@ export class Tank {
         this.damageDisplay = 0; //for how much longer to be displaying damage (flash white)
         this.hitRadius = 40; //how close a projectile has to be to hit this tank.
         this.isDead = false;
+        this.teamColour = teamColour;
     }
 
     updateFromReceivedTank(receivedTank: ReceivedTank) {
@@ -57,6 +69,10 @@ export class Tank {
 
     takeDamage(projectile: Projectile, p: p5) {
         this.damageDisplay = 10;
+        //todo: drop flag in all cases
+        if (this.id === getPlayer().id) {
+            dropFlagIfPlayerCarrying();
+        }
         this.health--;
         if (this.health <= 0) {
             this.isDead = true;
@@ -79,7 +95,7 @@ export class Tank {
             p.scale(-1, 1); //possible scale to flip horizontally
         }
 
-        const img = getTankImgFor(this.imgIx + '');
+        const img = getTankImgOrFail(this.imgIx + '');
         const imgWhite = makeAndCacheWhiteImageIfNecessary(this.imgIx + '', p);
         const imgToDraw = this.damageDisplay > 0 ? imgWhite : img;
 
@@ -90,6 +106,7 @@ export class Tank {
         p.imageMode(p.CENTER);
         p.image(imgToDraw, 0, 0);
         drawTrajectoryLine(this, this.barrelAngle, p);
+
         p.pop();
 
         this.drawText(p);
@@ -276,9 +293,9 @@ function makeAndCacheWhiteImageIfNecessary(
     p: p5
 ): p5.Image {
     const keyForWhite: string = keyForNormal + '-white';
-    if (getTankImgFor(keyForWhite) === undefined) {
-        storeTankImageFor(keyForWhite, getTankImgFor(keyForNormal).get());
-        getTankImgFor(keyForWhite).filter(p.THRESHOLD, 0);
+    if (getTankImg(keyForWhite) === undefined) {
+        storeTankImageFor(keyForWhite, getTankImgOrFail(keyForNormal).get());
+        getTankImgOrFail(keyForWhite).filter(p.THRESHOLD, 0);
     }
-    return getTankImgFor(keyForWhite);
+    return getTankImgOrFail(keyForWhite);
 }

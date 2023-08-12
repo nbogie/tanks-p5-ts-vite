@@ -1,4 +1,37 @@
-function setupFlags() {
+import p5 from 'p5';
+import { Tank, TankId } from './tank';
+import { calcGroundHeightAt } from './ground';
+import { worldPositionToScreenPosition } from './coordsUtils';
+import { getPlayer } from './mainSketch';
+import { getImageFor } from './images';
+
+let redFlag: Flag;
+let blueFlag: Flag;
+let redGoal: Goal;
+let blueGoal: Goal;
+let scores: Scores;
+let _cachedP5: p5 = undefined!;
+
+export interface Flag {
+    animFrame: 0 | 1;
+    teamColour: TeamColour;
+    pos: p5.Vector;
+    vel: p5.Vector;
+    imageNamesStem: string;
+    idOfCarryingTank: TankId | null;
+    hitRadius: number;
+}
+export interface Goal {
+    teamColour: TeamColour;
+    pos: p5.Vector;
+    hitRadius: number;
+}
+type Scores = Record<TeamColour, number>;
+export type TeamColour = 'red' | 'blue';
+export const allTeamColours: TeamColour[] = ['red', 'blue'];
+
+export function setupFlags(p: p5) {
+    _cachedP5 = p;
     redFlag = createFlag('red');
     blueFlag = createFlag('blue');
 
@@ -10,55 +43,61 @@ function setupFlags() {
         blue: 0,
     };
 }
+function getP5() {
+    return _cachedP5;
+}
 
-function getScoreForTeam(teamColour) {
+export function getScoreForTeam(teamColour: TeamColour) {
     return scores[teamColour];
 }
 
-function drawFlags() {
+export function drawFlags() {
     drawFlag(redFlag);
     drawFlag(blueFlag);
     drawGoal(redGoal);
     drawGoal(blueGoal);
 }
 
-function getRedFlag() {
+export function getRedFlag() {
     return redFlag;
 }
 
-function getBlueFlag() {
+export function getBlueFlag() {
     return blueFlag;
 }
 
-function getGoalForFlag(flag) {
+function getGoalForFlag(flag: Flag) {
     return flag.teamColour === 'red' ? blueGoal : redGoal;
 }
 
-function flagStartPoint(teamColour) {
+function flagStartPoint(teamColour: TeamColour) {
+    const p = getP5();
     const x = teamColour === 'red' ? -2000 : 2000;
-    const y = calcGroundHeightAt(x) - 30;
-    return createVector(x, y);
+    const y = calcGroundHeightAt(x, p) - 30;
+    return p.createVector(x, y);
 }
 
-function goalPosition(teamColour) {
+export function goalPosition(teamColour: TeamColour) {
+    const p = getP5();
     const x = teamColour === 'red' ? -4000 : 4000;
-    const y = calcGroundHeightAt(x);
-    return createVector(x, y);
+    const y = calcGroundHeightAt(x, p);
+    return p.createVector(x, y);
 }
 
-function createFlag(teamColour) {
+export function createFlag(teamColour: TeamColour) {
+    const p = getP5();
     return {
-        animFrame: random([0, 1]),
+        animFrame: p.random([0, 1]),
         teamColour,
         pos: flagStartPoint(teamColour),
         imageNamesStem: teamColour === 'red' ? 'flagRed' : 'flagBlue',
-        vel: createVector(0, 0),
+        vel: p.createVector(0, 0),
         idOfCarryingTank: null,
         hitRadius: 60,
     };
 }
 
-function createGoal(teamColour) {
+function createGoal(teamColour: TeamColour) {
     return {
         teamColour,
         pos: goalPosition(teamColour),
@@ -66,45 +105,49 @@ function createGoal(teamColour) {
     };
 }
 
-function drawGoal(goal) {
-    push();
-    const bobOffset = createVector(0, map(sin(frameCount / 23), -1, 1, -5, 5));
-    translate(worldPositionToScreenPosition(goal.pos.copy().add(bobOffset)));
-    const diameterScale = map(sin(frameCount / 43), -1, 1, 0.8, 1.1);
-    const fillColour = color(
+function drawGoal(goal: Goal) {
+    const p = getP5();
+    p.push();
+    const bobOffset = p.createVector(
+        0,
+        p.map(p.sin(p.frameCount / 23), -1, 1, -5, 5)
+    );
+    p.translate(
+        worldPositionToScreenPosition(goal.pos.copy().add(bobOffset), p)
+    );
+    const diameterScale = p.map(p.sin(p.frameCount / 43), -1, 1, 0.8, 1.1);
+    const fillColour = p.color(
         goal.teamColour === 'red' ? 'tomato' : 'dodgerblue'
     );
     fillColour.setAlpha(100);
-    stroke(255, 100);
-    strokeWeight(10);
-    fill(fillColour);
-    circle(0, 0, diameterScale * goal.hitRadius * 2);
-    pop();
+    p.stroke(255, 100);
+    p.strokeWeight(10);
+    p.fill(fillColour);
+    p.circle(0, 0, diameterScale * goal.hitRadius * 2);
+    p.pop();
 }
 
-function getTankById(soughtId) {
+export function getTankById(soughtId: TankId): Tank | null {
     if (soughtId === undefined || soughtId === null) {
         return null;
     }
+    const player = getPlayer();
     if (soughtId === player.id) {
         return player;
     } else {
-        return cachedTanks[soughtId] ?? null;
+        return getTankById(soughtId) ?? null;
     }
 }
 
-function computeFlagPosAndCarryingTank(flag) {
-    const carryingTank = getTankById(flag.idOfCarryingTank);
+export function computeFlagPosAndCarryingTank(flag: Flag) {
+    const p = getP5();
+    const carryingTank = flag.idOfCarryingTank
+        ? getTankById(flag.idOfCarryingTank)
+        : null;
     if (carryingTank === null) {
         const breezeOffset = p5.Vector.fromAngle(
-            map(
-                noise(frameCount / 20),
-                0,
-                1,
-                0,
-                720,
-                10 * noise(1000 + frameCount / 31)
-            )
+            p.map(p.noise(p.frameCount / 3000), 0, 1, 0, 720),
+            100 * p.noise(1000 + p.frameCount / 30) //TODO: this was ignored in previous
         );
         return {
             pos: p5.Vector.add(flag.pos, breezeOffset),
@@ -112,46 +155,48 @@ function computeFlagPosAndCarryingTank(flag) {
         };
     } else {
         return {
-            pos: carryingTank.pos.copy().add(createVector(0, -40)),
+            pos: carryingTank.pos.copy().add(p.createVector(0, -40)),
             carryingTank: carryingTank,
         };
     }
 }
 
-function drawFlag(flag) {
-    push();
+export function drawFlag(flag: Flag) {
+    const p = getP5();
+    p.push();
     const { pos, carryingTank } = computeFlagPosAndCarryingTank(flag);
-    translate(worldPositionToScreenPosition(pos));
+    p.translate(worldPositionToScreenPosition(pos, p));
     const xScale = carryingTank?.isFacingRight ? -1 : 1;
-    scale(xScale, 1);
-    imageMode(CENTER);
-    const img = images[flag.imageNamesStem + (flag.animFrame + 1)];
-    image(img, 0, 0);
-    // noFill();
-    // stroke(255, 100)
-    // circle(0, 0, flag.hitRadius * 2)
-    // text(flag.idOfCarryingTank + " - " + (carryingTank?.id ?? "free") + " - " + (!!carryingTank), 0, -50)
-    pop();
+    p.scale(xScale, 1);
+    p.imageMode(p.CENTER);
+    const img = getImageFor(flag.imageNamesStem + (flag.animFrame + 1));
+    p.image(img, 0, 0);
+    // p.noFill();
+    // p.stroke(255, 100)
+    // p.circle(0, 0, flag.hitRadius * 2)
+    // p.text(flag.idOfCarryingTank + " - " + (carryingTank?.id ?? "free") + " - " + (!!carryingTank), 0, -50)
+    p.pop();
 }
 
-function updateFlags() {
+export function updateFlags() {
     updateFlag(redFlag);
     updateFlag(blueFlag);
 }
 
-function moveFreeFlagByVelocity(flag) {
-    flag.vel.add(createVector(0, 0.2));
+export function moveFreeFlagByVelocity(flag: Flag) {
+    const p = getP5();
+    flag.vel.add(p.createVector(0, 0.2));
     flag.pos.add(flag.vel);
-    const groundHeight = calcGroundHeightAt(flag.pos.x);
+    const groundHeight = calcGroundHeightAt(flag.pos.x, p);
     if (flag.pos.y > groundHeight - 30) {
         flag.pos.y = groundHeight - 30;
-        flag.vel = createVector(0, 0);
+        flag.vel = p.createVector(0, 0);
     }
 }
 
-function updateFlag(flag) {
-    if (frameCount % 20 === 0) {
-        flag.animFrame = (flag.animFrame + 1) % 2;
+export function updateFlag(flag: Flag) {
+    if (getP5().frameCount % 20 === 0) {
+        flag.animFrame = ((flag.animFrame + 1) % 2) as 0 | 1;
     }
 
     if (flag.idOfCarryingTank === null) {
@@ -165,7 +210,7 @@ function updateFlag(flag) {
             flag.idOfCarryingTank = collidingEnemyTank.id;
         }
     } else {
-        const { pos, carryingTank } = computeFlagPosAndCarryingTank(flag);
+        const { pos } = computeFlagPosAndCarryingTank(flag);
         flag.pos = pos.copy();
         if (isFlagAtDestination(flag)) {
             scoreFlag(flag);
@@ -173,21 +218,26 @@ function updateFlag(flag) {
     }
 }
 
-function isFlagAtDestination(flag) {
+export function isFlagAtDestination(flag: Flag) {
     const goal = getGoalForFlag(flag);
     return flag.pos.dist(goal.pos) < goal.hitRadius;
 }
 
-function scoreFlag(flag) {
+export function scoreFlag(flag: Flag) {
+    const p = getP5();
     const scorerTeam = flag.teamColour === 'red' ? 'blue' : 'red';
     scores[scorerTeam]++;
     flag.pos = flagStartPoint(flag.teamColour);
     flag.idOfCarryingTank = null;
-    flag.vel = p5.Vector.fromAngle(-PI / 2 + random(-0.2, 0.2), 10);
+    flag.vel = p5.Vector.fromAngle(-p.PI / 2 + p.random(-0.2, 0.2), 10);
 }
 
-function findCollidingTankOfTeam(pos, hitRadius, soughtTeamColour) {
-    return [player].find(
+export function findCollidingTankOfTeam(
+    pos: p5.Vector,
+    hitRadius: number,
+    soughtTeamColour: TeamColour
+) {
+    return [getPlayer()].find(
         (t) =>
             t.teamColour === soughtTeamColour &&
             t.pos.dist(pos) < hitRadius &&
@@ -195,21 +245,22 @@ function findCollidingTankOfTeam(pos, hitRadius, soughtTeamColour) {
     );
 }
 
-function dropFlag(flag) {
+export function dropFlag(flag: Flag) {
+    const p = getP5();
     if (flag.idOfCarryingTank) {
         const carryingTank = getTankById(flag.idOfCarryingTank);
         flag.pos = carryingTank
-            ? carryingTank.pos.copy().add(createVector(0, -100))
-            : createVector(300, 300);
-        flag.vel = p5.Vector.fromAngle(-PI / 2 + random(-0.2, 0.2), 10);
+            ? carryingTank.pos.copy().add(p.createVector(0, -100))
+            : p.createVector(300, 300);
+        flag.vel = p5.Vector.fromAngle(-p.PI / 2 + p.random(-0.2, 0.2), 10);
         flag.idOfCarryingTank = null;
     }
 }
 
-function dropFlagIfPlayerCarrying() {
+export function dropFlagIfPlayerCarrying() {
     const allFlags = [redFlag, blueFlag];
     allFlags.forEach((f) => {
-        if (f.idOfCarryingTank === player.id) {
+        if (f.idOfCarryingTank === getPlayer().id) {
             dropFlag(f);
         }
     });

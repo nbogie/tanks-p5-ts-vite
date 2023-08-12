@@ -9,8 +9,10 @@ export function processReceivedTank(receivedTank: ReceivedTank, p: p5) {
             receivedTank.pos.x,
             receivedTank.pos.y,
             receivedTank.id,
+            receivedTank.teamColour,
             p
         );
+
         cachedTanks[receivedTank.id] = newTank;
     }
     const cachedTank = cachedTanks[receivedTank.id];

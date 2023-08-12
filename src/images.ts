@@ -5,35 +5,54 @@ const tankImgs: Record<string, p5.Image> = {};
 // export let turretImg: p5.Image;
 
 export function loadImages(p: p5) {
-    for (let i = 0; i < 5; i++) {
-        const greyPath = 'tanks_tankGrey' + p.str(i + 1) + '.png';
-        const imageGrey = p.loadImage('/images/' + greyPath);
-        tankImgs[i] = imageGrey;
-        // let navyPath = 'tanks_tankNavy' + p.str(i + 1) + '.png';
-        // let imageNavy = p.loadImage('/images/' + navyPath);
-        // tankImgs[i] = imageNavy;
+    const pathToImages = '/images/';
+    for (let ix = 0; ix < 5; ix++) {
+        const greyPath = 'tanks_tankGrey' + (ix + 1) + '.png';
+        console.log('loading: ' + greyPath + ' for ix: ' + ix);
+        const imageGrey = p.loadImage(pathToImages + greyPath);
+        tankImgs[ix] = imageGrey;
+        const navyPath = 'tanks_tankNavy' + (ix + 1) + '.png';
+        const imageNavy = p.loadImage(pathToImages + navyPath);
+        tankImgs[ix + 5] = imageNavy;
     }
-
-    images.bullet = p.loadImage('/images/' + 'tank_bullet2.png');
-    images.shield = p.loadImage('/images/' + 'shield.png');
-    images.arrowEmpty = p.loadImage('/images/' + 'tank_arrowEmpty.png');
-    images.arrowFull = p.loadImage('/images/' + 'tank_arrowFull.png');
-    images.crateWood = p.loadImage('/images/' + 'tanks_crateWood.png');
-    images.crateArmor = p.loadImage('/images/' + 'tanks_crateArmor.png');
-    images.crateAmmo = p.loadImage('/images/' + 'tanks_crateAmmo.png');
-    images.crateRepair = p.loadImage('/images/' + 'tanks_crateRepair.png');
-    // turretImg = p.loadImage('/images/' + 'turret2.png');
-    images.duck1 = p.loadImage('/images/' + 'duck_outline_target_brown.png');
-    images.duck2 = p.loadImage('/images/' + 'duck_outline_target_white.png');
-    images.duck3 = p.loadImage('/images/' + 'duck_outline_target_yellow.png');
-    images.duckStick = p.loadImage('/images/' + 'stick_wood.png');
+    images.bullet = p.loadImage(pathToImages + 'tank_bullet2.png');
+    images.shield = p.loadImage(pathToImages + 'shield.png');
+    images.arrowEmpty = p.loadImage(pathToImages + 'tank_arrowEmpty.png');
+    images.arrowFull = p.loadImage(pathToImages + 'tank_arrowFull.png');
+    images.crateWood = p.loadImage(pathToImages + 'tanks_crateWood.png');
+    images.crateArmor = p.loadImage(pathToImages + 'tanks_crateArmor.png');
+    images.crateAmmo = p.loadImage(pathToImages + 'tanks_crateAmmo.png');
+    images.crateRepair = p.loadImage(pathToImages + 'tanks_crateRepair.png');
+    // turretImg = p.loadImage(pathToImages + 'turret2.png');
+    images.duck1 = p.loadImage(pathToImages + 'duck_outline_target_brown.png');
+    images.duck2 = p.loadImage(pathToImages + 'duck_outline_target_white.png');
+    images.duck3 = p.loadImage(pathToImages + 'duck_outline_target_yellow.png');
+    images.duckStick = p.loadImage(pathToImages + 'stick_wood.png');
+    images.flagRed1 = p.loadImage(pathToImages + 'flagRed.png');
+    images.flagRed2 = p.loadImage(pathToImages + 'flagRed2.png');
+    images.flagBlue1 = p.loadImage(pathToImages + 'flagBlue.png');
+    images.flagBlue2 = p.loadImage(pathToImages + 'flagBlue2.png');
+    images.heartFull = p.loadImage(pathToImages + 'hud_heartFull.png');
+    images.heartHalf = p.loadImage(pathToImages + 'hud_heartHalf.png');
+    images.heartEmpty = p.loadImage(pathToImages + 'hud_heartEmpty.png');
 }
 
 export function getImageFor(key: string): p5.Image {
-    return images[key];
+    const img = images[key];
+    if (!img) {
+        throw new Error("Can't find image for: " + key);
+    }
+    return img;
 }
 
-export function getTankImgFor(key: string): p5.Image {
+export function getTankImgOrFail(key: string): p5.Image {
+    const img = getTankImg(key);
+    if (!img) {
+        throw new Error('No tank image for key: ' + key);
+    }
+    return img;
+}
+export function getTankImg(key: string): p5.Image {
     return tankImgs[key];
 }
 

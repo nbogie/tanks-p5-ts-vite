@@ -30,6 +30,8 @@ import {
 } from './weaponSys';
 import { setupSounds } from './sound';
 import { drawDebugHUD } from './debugHUD';
+import { allTeamColours, drawFlags, setupFlags } from './flags';
+import { pick } from './utils';
 
 const seed = 123;
 
@@ -54,11 +56,13 @@ function createSketch(p: p5) {
 
         //not quite guaranteed unique but it'll do for now
         const myId = p.floor(p.random(Number.MAX_SAFE_INTEGER));
-        player = new Tank(p.random(100, 500), 300, myId, p);
+        const teamColour = pick(allTeamColours);
+        player = new Tank(p.random(100, 500), 300, myId, teamColour, p);
         setupSocketIO(p);
         setupPalette();
         setupWeaponSystem(p);
         setupSounds(p);
+        setupFlags(p);
         setupSky(p);
         setupClouds(p);
         setupPowerups(p);
@@ -72,6 +76,7 @@ function createSketch(p: p5) {
         drawSun(p);
         drawDucks(p);
         drawGround(p);
+        drawFlags();
         for (const cTank of getCachedTanks()) {
             cTank.draw(p);
         }

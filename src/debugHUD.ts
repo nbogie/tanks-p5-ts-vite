@@ -22,6 +22,7 @@ export function drawDebugHUD(p: p5) {
         getConfigValue('shouldTransmit')
             ? 'transmit is on (t)'
             : 'transmit is off (t)',
+        'Your Team: ' + getPlayer().teamColour,
         'Weapon: ' + (getWeaponSystem().canFire() ? 'OK' : '...'),
         'ammo: ' + '*'.repeat(getWeaponSystem().getAmmoCount()),
         'kind: ' + getWeaponSystem().getProjectileKind(),

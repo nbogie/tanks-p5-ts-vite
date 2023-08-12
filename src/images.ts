@@ -2,19 +2,21 @@ import p5 from 'p5';
 import { TeamColour } from './flags';
 
 const images: { [key: string]: p5.Image } = {}; //all other images
-const tankImgs: Record<string, p5.Image> = {};
+const tankImgs: Record<TeamColour, Record<string, p5.Image>> = {
+    red: {},
+    blue: {},
+};
 // export let turretImg: p5.Image;
 
 export function loadImages(p: p5) {
     const pathToImages = '/images/';
     for (let ix = 0; ix < 5; ix++) {
         const greyPath = 'tanks_tankGrey' + (ix + 1) + '.png';
-        console.log('loading: ' + greyPath + ' for ix: ' + ix);
         const imageGrey = p.loadImage(pathToImages + greyPath);
-        tankImgs[ix] = imageGrey;
+        tankImgs['red'][ix] = imageGrey;
         const navyPath = 'tanks_tankNavy' + (ix + 1) + '.png';
         const imageNavy = p.loadImage(pathToImages + navyPath);
-        tankImgs[ix + 5] = imageNavy;
+        tankImgs['blue'][ix] = imageNavy;
     }
     images.bullet = p.loadImage(pathToImages + 'tank_bullet2.png');
     images.shield = p.loadImage(pathToImages + 'shield.png');
@@ -46,15 +48,18 @@ export function getImageFor(key: string): p5.Image {
     return img;
 }
 
-export function getTankImgOrFail(key: string): p5.Image {
-    const img = getTankImg(key);
+export function getTankImgOrFail(
+    teamColour: TeamColour,
+    key: string
+): p5.Image {
+    const img = getTankImg(teamColour, key);
     if (!img) {
         throw new Error('No tank image for key: ' + key);
     }
     return img;
 }
-export function getTankImg(key: string): p5.Image {
-    return tankImgs[key];
+export function getTankImg(teamColour: TeamColour, key: string): p5.Image {
+    return tankImgs[teamColour][key];
 }
 
 // export function getTurretImg(): p5.Image {
@@ -62,10 +67,14 @@ export function getTankImg(key: string): p5.Image {
 // }
 
 export function getRandomTankImgIxForTeam(teamColour: TeamColour, p: p5) {
-    const choices = Object.keys(tankImgs);
+    const choices = Object.keys(tankImgs[teamColour]);
     return p.random(choices);
 }
 
-export function storeTankImageFor(key: string, imgToStore: p5.Image) {
-    tankImgs[key] = imgToStore;
+export function storeTankImageFor(
+    teamColour: TeamColour,
+    key: string,
+    imgToStore: p5.Image
+) {
+    tankImgs[teamColour][key] = imgToStore;
 }

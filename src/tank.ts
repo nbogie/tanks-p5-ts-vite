@@ -95,8 +95,12 @@ export class Tank {
             p.scale(-1, 1); //possible scale to flip horizontally
         }
 
-        const img = getTankImgOrFail(this.imgIx + '');
-        const imgWhite = makeAndCacheWhiteImageIfNecessary(this.imgIx + '', p);
+        const img = getTankImgOrFail(this.teamColour, this.imgIx + '');
+        const imgWhite = makeAndCacheWhiteImageIfNecessary(
+            this.teamColour,
+            this.imgIx + '',
+            p
+        );
         const imgToDraw = this.damageDisplay > 0 ? imgWhite : img;
 
         // _drawTurret(this, this.barrelAngle)
@@ -289,13 +293,18 @@ function drawTrajectoryLine(tank: Tank, angle: number, p: p5) {
 }
 
 function makeAndCacheWhiteImageIfNecessary(
+    teamColour: TeamColour,
     keyForNormal: string,
     p: p5
 ): p5.Image {
     const keyForWhite: string = keyForNormal + '-white';
-    if (getTankImg(keyForWhite) === undefined) {
-        storeTankImageFor(keyForWhite, getTankImgOrFail(keyForNormal).get());
-        getTankImgOrFail(keyForWhite).filter(p.THRESHOLD, 0);
+    if (getTankImg(teamColour, keyForWhite) === undefined) {
+        storeTankImageFor(
+            teamColour,
+            keyForWhite,
+            getTankImgOrFail(teamColour, keyForNormal).get()
+        );
+        getTankImgOrFail(teamColour, keyForWhite).filter(p.THRESHOLD, 0);
     }
-    return getTankImgOrFail(keyForWhite);
+    return getTankImgOrFail(teamColour, keyForWhite);
 }

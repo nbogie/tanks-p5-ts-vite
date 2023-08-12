@@ -146,8 +146,8 @@ export function computeFlagPosAndCarryingTank(flag: Flag) {
         : null;
     if (carryingTank === null) {
         const breezeOffset = p5.Vector.fromAngle(
-            p.map(p.noise(p.frameCount / 3000), 0, 1, 0, 720),
-            100 * p.noise(1000 + p.frameCount / 30) //TODO: this was ignored in previous
+            p.map(p.noise(p.frameCount / 50), 0, 1, 0, p.TWO_PI * 2),
+            10 * p.noise(1000 + p.frameCount / 30) //TODO: this was ignored in previous
         );
         return {
             pos: p5.Vector.add(flag.pos, breezeOffset),

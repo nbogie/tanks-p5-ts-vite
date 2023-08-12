@@ -7,7 +7,7 @@ import { TeamColour, dropFlagIfPlayerCarrying } from './flags';
 import { calcGroundAngle, calcGroundHeightAt } from './ground';
 import {
     getImageFor,
-    getRandomTankImgIx,
+    getRandomTankImgIxForTeam,
     getTankImg,
     getTankImgOrFail,
     storeTankImageFor,
@@ -50,7 +50,7 @@ export class Tank {
         this.pos = p.createVector(x, y);
         this.vel = p.createVector(0, 1);
         this.isFacingRight = true;
-        this.imgIx = getRandomTankImgIx(p);
+        this.imgIx = getRandomTankImgIxForTeam(teamColour, p);
         this.aiming = false;
         this.aimPower = 50;
         this.barrelAngle = 0;

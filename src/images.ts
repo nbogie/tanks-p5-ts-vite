@@ -1,4 +1,5 @@
 import p5 from 'p5';
+import { TeamColour } from './flags';
 
 const images: { [key: string]: p5.Image } = {}; //all other images
 const tankImgs: Record<string, p5.Image> = {};
@@ -60,8 +61,9 @@ export function getTankImg(key: string): p5.Image {
 //     return turretImg;
 // }
 
-export function getRandomTankImgIx(p: p5) {
-    return p.random(Object.keys(tankImgs));
+export function getRandomTankImgIxForTeam(teamColour: TeamColour, p: p5) {
+    const choices = Object.keys(tankImgs);
+    return p.random(choices);
 }
 
 export function storeTankImageFor(key: string, imgToStore: p5.Image) {

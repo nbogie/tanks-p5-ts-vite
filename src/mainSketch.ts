@@ -61,9 +61,7 @@ function createSketch(p: p5) {
         myCanvas.mousePressed(handleMousePressed);
 
         //not quite guaranteed unique but it'll do for now
-        const myId = p.floor(p.random(Number.MAX_SAFE_INTEGER));
-        const teamColour = pick(allTeamColours);
-        player = new Tank(p.random(100, 500), 300, myId, teamColour, p);
+        createPlayerTank(p);
         setupSocketIO(p);
         setupPalette();
         setupWeaponSystem(p);
@@ -122,6 +120,12 @@ function createSketch(p: p5) {
     p.preload = preload;
     p.keyPressed = (e) => keyPressed(e, p);
     p.windowResized = () => p.resizeCanvas(p.windowWidth, p.windowHeight);
+}
+
+function createPlayerTank(p: p5) {
+    const myId = p.floor(p.random(Number.MAX_SAFE_INTEGER));
+    const teamColour = pick(allTeamColours);
+    player = new Tank(p.random(100, 500), 300, myId, teamColour, p);
 }
 
 function keyPressed(_event: object | undefined, p: p5) {

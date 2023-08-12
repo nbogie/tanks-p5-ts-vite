@@ -4,6 +4,7 @@ const config = {
     includePowerups: true,
     shouldDrawMiniMapCoords: false,
     shouldDrawMiniMap: true,
+    shouldUseFBMTerrain: false,
 };
 
 type Config = typeof config;

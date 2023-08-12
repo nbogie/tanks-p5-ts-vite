@@ -144,6 +144,9 @@ function keyPressed(_event: object | undefined, p: p5) {
     if (p.key === 'f') {
         dropFlagIfPlayerCarrying();
     }
+    if (p.key === 'b') {
+        toggleConfig('shouldUseFBMTerrain');
+    }
 
     if (p.key === 'p') {
         toggleFrameRate(p);

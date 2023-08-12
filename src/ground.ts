@@ -2,15 +2,24 @@ import p5 from 'p5';
 import { isSkyDarkened } from './sky';
 import { getPaletteColour } from './palette';
 import { getPlayer } from './player';
+import { getConfigValue } from './config';
+import { fbmNoiseAtX } from './fbmNoiseAtX';
 
-const terrainNoiseScale = 0.004;
+export const terrainNoiseScale = 0.004;
 
 export function calcGroundHeightAt(x: number, p: p5, zOffset: number = 0) {
-    const noiseVal = p.noise(
-        x * terrainNoiseScale,
-        zOffset * terrainNoiseScale
-    );
-    return p.map(noiseVal, 0.1, 0.9, 680, 400, true);
+    //are we using fancy slower FBM algorithm or simpler?
+    if (getConfigValue('shouldUseFBMTerrain')) {
+        const noiseVal = fbmNoiseAtX(x, p, zOffset);
+        return p.map(noiseVal, 0.4, 1.35, 680, 400, true);
+    } else {
+        const noiseVal = perlinNoiseAt(x, p, zOffset);
+        return p.map(noiseVal, 0.1, 0.9, 680, 400, true);
+    }
+}
+
+export function perlinNoiseAt(x: number, p: p5, zOffset: number = 0) {
+    return p.noise(x * terrainNoiseScale, zOffset * terrainNoiseScale);
 }
 
 /** 
@@ -30,6 +39,9 @@ export function calcGroundAngle(x: number, wheelbaseDist: number, p: p5) {
     return p5.Vector.sub(pos2, pos1).heading();
 }
 
+function snap(val: number, grid: number, p: p5): number {
+    return grid * p.round(val / grid);
+}
 export function drawGround(p: p5) {
     p.push();
 
@@ -38,14 +50,20 @@ export function drawGround(p: p5) {
 
     p.beginShape();
     p.vertex(-50, p.height / 2);
+    const terrainStep = 5; //calculate every n pixels.  bigger values are more efficient but will lose some terrain detail.
+
     for (
-        let x = player.pos.x - p.width / 2;
-        x < player.pos.x + p.width / 2;
-        x++
+        let x = snap(player.pos.x - p.width / 2, terrainStep, p) - terrainStep;
+        x < snap(player.pos.x + p.width / 2, terrainStep, p) + terrainStep * 2;
+        x += terrainStep
     ) {
         const screenX = x - player.pos.x + p.width / 2;
         const y = calcGroundHeightAt(x, p);
         p.vertex(screenX, y);
+        // if (x % 100 === 0) {
+        //     const fbmn = fbmNoiseAtX(x, p);
+        //     p.text(fbmn.toFixed(2), screenX, y - 50);
+        // }
     }
     p.vertex(p.width + 50, p.height / 2);
     p.vertex(p.width + 50, p.height + 20);

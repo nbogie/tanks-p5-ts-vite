@@ -15,6 +15,7 @@ import {
 import { Projectile } from './projectile';
 import { getSocket } from './socketio';
 import { getPlayer } from './player';
+import { getCachedTankById } from './tanksCache';
 export type TankId = number;
 
 export interface ReceivedTank {
@@ -113,7 +114,7 @@ export class Tank {
         }
         p.imageMode(p.CENTER);
         p.image(imgToDraw, 0, 0);
-        drawTrajectoryLine(this, this.barrelAngle, p);
+        drawAimingArrow(this, this.barrelAngle, p);
 
         p.pop();
 
@@ -269,16 +270,8 @@ export class Tank {
 //     p.pop();
 // }
 
-function drawTrajectoryLine(tank: Tank, angle: number, p: p5) {
+function drawAimingArrow(tank: Tank, angle: number, p: p5) {
     p.push();
-    p.strokeWeight(5);
-
-    if (tank.aiming === true && p.frameCount % 1 === 0) {
-        const randColor = p.color(p.random(['red', 'orange']));
-        p.stroke(randColor);
-    } else {
-        p.stroke('black');
-    }
 
     // let pos = p5.Vector.fromAngle(angle).mult(10);
     // translate(0,-20) //up to visual turret position
@@ -321,6 +314,6 @@ export function getTankById(soughtId: TankId): Tank | null {
     if (soughtId === player.id) {
         return player;
     } else {
-        return getTankById(soughtId) ?? null;
+        return getCachedTankById(soughtId) ?? null;
     }
 }

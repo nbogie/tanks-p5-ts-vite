@@ -1,5 +1,5 @@
 import p5 from 'p5';
-import { ReceivedTank, Tank } from './tank';
+import { ReceivedTank, Tank, TankId } from './tank';
 
 const cachedTanks: { [tankId: string]: Tank } = {};
 
@@ -27,6 +27,10 @@ export function getCachedTanks(): Tank[] {
 
 export function getCachedTankKeys(): string[] {
     return Object.keys(cachedTanks);
+}
+
+export function getCachedTankById(soughtId: TankId): Tank | undefined {
+    return cachedTanks[soughtId];
 }
 
 export function drawCachedTanks(p: p5): void {

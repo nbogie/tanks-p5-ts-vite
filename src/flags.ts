@@ -61,33 +61,33 @@ export function drawFlags() {
     drawGoal(blueGoal);
 }
 
-export function getRedFlag() {
+export function getRedFlag(): Flag {
     return redFlag;
 }
 
-export function getBlueFlag() {
+export function getBlueFlag(): Flag {
     return blueFlag;
 }
 
-function getGoalForFlag(flag: Flag) {
+function getGoalForFlag(flag: Flag): Goal {
     return flag.teamColour === 'red' ? blueGoal : redGoal;
 }
 
-function flagStartPoint(teamColour: TeamColour) {
+function flagStartPoint(teamColour: TeamColour): p5.Vector {
     const p = getP5();
     const x = teamColour === 'red' ? -flagStartDist : flagStartDist;
     const y = calcGroundHeightAt(x, p) - 30;
     return p.createVector(x, y);
 }
 
-function goalPosition(teamColour: TeamColour) {
+function goalPosition(teamColour: TeamColour): p5.Vector {
     const p = getP5();
     const x = teamColour === 'red' ? -goalStartDist : goalStartDist;
     const y = calcGroundHeightAt(x, p);
     return p.createVector(x, y);
 }
 
-function createFlag(teamColour: TeamColour) {
+function createFlag(teamColour: TeamColour): Flag {
     const p = getP5();
     return {
         animFrame: p.random([0, 1]),
@@ -100,7 +100,7 @@ function createFlag(teamColour: TeamColour) {
     };
 }
 
-function createGoal(teamColour: TeamColour) {
+function createGoal(teamColour: TeamColour): Goal {
     return {
         teamColour,
         pos: goalPosition(teamColour),

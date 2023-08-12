@@ -1,50 +1,59 @@
 import p5 from 'p5';
+import { getConfig } from './config';
 import { worldPositionToScreenPosition } from './coordsUtils';
+import {
+    Entity,
+    IDeletable,
+    IDrawable,
+    IPosition,
+    IUpdatable,
+    addEntities,
+    getEntities,
+} from './entities';
 import { calcGroundHeightAt } from './ground';
+import { getImageFor } from './images';
 import { Projectile } from './projectile';
 import { collect } from './utils';
-import { getImageFor } from './images';
-import { getConfig } from './config';
 
 //assets from https://www.kenney.nl/assets/shooting-gallery
-let ducks: Duck[];
 type DuckKind = 1 | 2 | 3;
 
-interface Duck {
+export interface Duck extends IDrawable, IUpdatable, IDeletable, IPosition {
+    entType: 'duck';
     originalPos: p5.Vector;
     motion: 'horizontal' | 'vertical' | 'none';
-    pos: p5.Vector;
     vel: p5.Vector;
     kind: DuckKind;
     size: number;
     isDying: boolean;
     rotation: number;
     rotationSpeed: number;
-    isDead: boolean;
 }
 
 export function getDucks(): Duck[] {
-    return ducks;
+    return getEntities().filter(isDuck);
+}
+
+export function isDuck(ent: Entity): ent is Duck {
+    return ent.entType === 'duck';
 }
 
 export function setupDucks(p: p5) {
     if (getConfig().includeDucks) {
-        createDucks(p);
+        addEntities(createDucks(p));
         setInterval(() => maybeAddDuckToWorld(p), 5000);
-    } else {
-        ducks = [];
     }
 }
 
 export function maybeAddDuckToWorld(p: p5) {
-    if (ducks.length < 10) {
+    if (getDucks().length < 10) {
         const duck = createDuck(p);
-        ducks.push(duck);
+        addEntities([duck]);
     }
 }
 
-export function createDucks(p: p5) {
-    ducks = collect(10, () => createDuck(p));
+export function createDucks(p: p5): Duck[] {
+    return collect(10, () => createDuck(p));
 }
 
 export function createDuck(p: p5): Duck {
@@ -54,6 +63,7 @@ export function createDuck(p: p5): Duck {
     const y = isGroundDuck ? calcGroundHeightAt(x, p) : 200;
     const originalPos = p.createVector(x, y);
     const duck: Duck = {
+        entType: 'duck',
         originalPos,
         motion,
         pos: originalPos.copy(),
@@ -64,6 +74,8 @@ export function createDuck(p: p5): Duck {
         rotation: 0,
         rotationSpeed: 0,
         isDead: false,
+        draw: (p: p5) => drawDuck(duck, p),
+        update: (p: p5) => updateDuck(duck, p),
     };
     return duck;
 }
@@ -75,15 +87,6 @@ export function duckTakeDamage(duck: Duck, projectile: Projectile, p: p5) {
         10
     );
     duck.rotationSpeed = p.random(0.02, 0.2) * p.random([-1, 1]);
-}
-
-export function drawDucks(p: p5) {
-    ducks.forEach((d) => drawDuck(d, p));
-}
-
-export function updateDucks(p: p5) {
-    ducks.forEach((d) => updateDuck(d, p));
-    ducks = ducks.filter((p) => !p.isDead);
 }
 
 export function imageKeyForDuckKind(kind: DuckKind) {

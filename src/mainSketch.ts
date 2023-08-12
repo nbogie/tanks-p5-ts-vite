@@ -3,8 +3,9 @@ import { generateCameraShakeVector, updateCamera } from './cameraShake';
 import { drawClouds, setupClouds, updateClouds } from './clouds';
 import { toggleConfig } from './config';
 import { drawDebugHUD } from './debugHUD';
-import { drawDucks, setupDucks, updateDucks } from './ducks';
+import { setupDucks } from './ducks';
 import { drawDustParticles, updateDustParticles } from './dust';
+import { drawEntities, updateEntities } from './entities';
 import { drawExplosions, updateExplosions } from './explosions';
 import {
     drawFlags,
@@ -17,7 +18,7 @@ import { loadImages } from './images';
 import { drawMiniMap } from './minimap';
 import { setupPalette } from './palette';
 import { createPlayerTank, getPlayer } from './player';
-import { drawPowerups, setupPowerups, updatePowerups } from './powerups';
+import { setupPowerups } from './powerups';
 import {
     drawProjectiles,
     emitProjectile,
@@ -74,7 +75,8 @@ function createSketch(p: p5) {
 
         p.translate(generateCameraShakeVector());
         drawSun(p);
-        drawDucks(p);
+        drawEntities(p);
+
         drawGround(p);
         drawFlags();
         for (const cTank of getCachedTanks()) {
@@ -82,7 +84,6 @@ function createSketch(p: p5) {
         }
 
         drawDustParticles(p);
-        drawPowerups(p);
         getPlayer().draw(p);
         drawProjectiles(p);
         drawExplosions(p);
@@ -91,14 +92,14 @@ function createSketch(p: p5) {
         drawDebugHUD(p);
 
         getPlayer().update(p);
-        updatePowerups(p);
+        updateEntities(p);
+
         updateProjectiles(p);
         updateExplosions(p);
         updateDustParticles(p);
         updateCamera(p);
         updateClouds(p);
         updateSky(p);
-        updateDucks(p);
         updateFlags();
         updateWeaponSystem(p);
     }

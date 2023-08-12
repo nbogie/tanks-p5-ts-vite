@@ -6,20 +6,21 @@ import { collect } from './utils';
 import { getImageFor } from './images';
 import { getConfig } from './config';
 import { getPlayer } from './player';
+import { IDeletable, IDrawable, IPosition, IUpdatable } from './entities';
 
 let powerups: Powerup[];
 
 const powerupKinds: PowerupKind[] = ['armor', 'ammo', 'repair'];
 
 type PowerupKind = 'armor' | 'ammo' | 'repair';
-interface Powerup {
-    pos: p5.Vector;
+export interface Powerup extends IDrawable, IUpdatable, IDeletable, IPosition {
+    entType: 'powerup';
     vel: p5.Vector;
     kind: PowerupKind;
     size: number;
     isOpened: boolean;
-    isDead: boolean;
 }
+
 export function setupPowerups(p: p5) {
     if (getConfig().includePowerups) {
         createPowerups(p);
@@ -40,14 +41,17 @@ export function createPowerups(p: p5) {
     powerups = collect(10, () => createPowerup(p));
 }
 
-export function createPowerup(p: p5) {
-    const powerup = {
+export function createPowerup(p: p5): Powerup {
+    const powerup: Powerup = {
+        entType: 'powerup',
         pos: p.createVector(p.random(-4000, 4000), 200),
         vel: p.createVector(0, 0),
         kind: p.random(powerupKinds),
         size: 40,
         isOpened: p.random([false]),
         isDead: false,
+        draw: (p) => drawPowerup(powerup, p),
+        update: (p) => updatePowerup(powerup, p),
     };
     return powerup;
 }

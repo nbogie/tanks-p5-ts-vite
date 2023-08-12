@@ -54,7 +54,7 @@ export function getTankImgOrFail(
 ): p5.Image {
     const img = getTankImg(teamColour, key);
     if (!img) {
-        throw new Error('No tank image for key: ' + key);
+        throw new Error(`No tank image for team: ${teamColour} key: ${key}`);
     }
     return img;
 }

@@ -5,20 +5,29 @@ const cachedTanks: { [tankId: string]: Tank } = {};
 
 const disconnectedTankTimeoutSec = 10;
 
-export function processReceivedTank(receivedTank: ReceivedTank, p: p5) {
-    let cachedTank = cachedTanks[receivedTank.id];
-    if (!cachedTank) {
-        const newTank = new Tank(
-            receivedTank.pos.x,
-            receivedTank.pos.y,
-            receivedTank.id,
-            receivedTank.teamColour,
-            p
-        );
-
-        cachedTanks[receivedTank.id] = newTank;
-        cachedTank = newTank;
+function getOrInsertTank(soughtTankId: TankId, creationFn: () => Tank): Tank {
+    const cachedTank = cachedTanks[soughtTankId];
+    if (cachedTank) {
+        return cachedTank;
     }
+
+    const newTank = creationFn();
+    cachedTanks[soughtTankId] = newTank;
+    return newTank;
+}
+
+export function processReceivedTank(receivedTank: ReceivedTank, p: p5) {
+    const cachedTank = getOrInsertTank(
+        receivedTank.id,
+        () =>
+            new Tank(
+                receivedTank.pos.x,
+                receivedTank.pos.y,
+                receivedTank.id,
+                receivedTank.teamColour,
+                p
+            )
+    );
 
     cachedTank.updateFromReceivedTank(receivedTank, p);
 }

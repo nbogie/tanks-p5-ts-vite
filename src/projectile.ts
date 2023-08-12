@@ -105,6 +105,14 @@ export class Projectile {
 
         this.pos.add(this.vel);
         this.vel.add(this.acc);
+
+        this.handleCollisionWithPlayer(p);
+        this.handleCollisionWithPowerups(p);
+        this.handleCollisionWithDucks(p);
+        this.handleCollisionWithGround(p);
+    }
+
+    handleCollisionWithPlayer(p: p5) {
         if (this.pos.dist(getPlayer().pos) < getPlayer().hitRadius) {
             if (this.kind !== 'rainbow') {
                 getPlayer().takeDamage(this, p);
@@ -115,7 +123,8 @@ export class Projectile {
             const terrainType = this.kind === 'rainbow' ? 'rainbow' : 'tank';
             spawnExplosion(this.pos, this.vel, terrainType, p);
         }
-
+    }
+    handleCollisionWithPowerups(p: p5) {
         for (const pup of getPowerups()) {
             if (this.pos.dist(pup.pos) < pup.size && !pup.isOpened) {
                 spawnExplosion(
@@ -128,7 +137,8 @@ export class Projectile {
                 powerupTakeDamage(pup, this);
             }
         }
-
+    }
+    handleCollisionWithDucks(p: p5) {
         for (const duck of getDucks()) {
             if (this.pos.dist(duck.pos) < duck.size && !duck.isDead) {
                 spawnExplosion(this.pos, this.vel, 'crateClosed', p);
@@ -136,7 +146,9 @@ export class Projectile {
                 duckTakeDamage(duck, this, p);
             }
         }
+    }
 
+    handleCollisionWithGround(p: p5) {
         const groundY = calcGroundHeightAt(this.pos.x, p);
         if (this.pos.y > groundY) {
             killProjectile(this, p);

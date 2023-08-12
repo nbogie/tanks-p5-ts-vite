@@ -12,7 +12,8 @@
         "type-check": "tsc --noEmit",
         "lint": "eslint --ext .ts src/",
         "type-check:watch": "tsc --noEmit --watch",
-        "format": "prettier --write src/**/*.ts"
+        "format": "prettier --write src/**/*.ts",
+        "cloc": "npx cloc --by-file-by-lang src"
     },
     "devDependencies": {
         "@types/p5": "^1.6.2",

@@ -1,5 +1,5 @@
 import p5 from 'p5';
-import { getPlayer } from './mainSketch';
+import { getPlayer } from './player';
 
 export function worldPositionToScreenPosition(pos: p5.Vector, p: p5) {
     return p.createVector(p.width / 2 + pos.x - getPlayer().pos.x, pos.y);

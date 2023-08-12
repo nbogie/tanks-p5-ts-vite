@@ -3,10 +3,10 @@ import {
     cloudPositionToScreenPosition,
     worldPositionToScreenPosition,
 } from './coordsUtils';
+import { getPaletteColour } from './palette';
 import { getSkyReflectionColourUnder } from './sky';
 import { collect } from './utils';
-import { getPlayer } from './mainSketch';
-import { getPaletteColour } from './palette';
+import { getPlayer } from './player';
 
 let clouds: Cloud[] = [];
 

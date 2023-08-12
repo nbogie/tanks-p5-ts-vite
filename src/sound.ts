@@ -4,8 +4,8 @@ import p5 from 'p5';
 // https://github.com/Tonejs/Tone.js/wiki/Signals
 // https://tonejs.github.io/docs/14.7.77/Oscillator.html#frequency
 import * as Tone from 'tone';
-import { getPlayer } from './mainSketch';
 import { Projectile } from './projectile';
+import { getPlayer } from './player';
 
 let projectileForAudio: Projectile | undefined;
 let projectileOsc: Tone.Oscillator;

@@ -2,8 +2,8 @@ import p5 from 'p5';
 import { worldPositionToScreenPosition } from './coordsUtils';
 import { calcGroundHeightAt } from './ground';
 import { getImageFor } from './images';
-import { getPlayer } from './mainSketch';
 import { TankId, getTankById } from './tank';
+import { getPlayer } from './player';
 const flagStartDist = 1000;
 const goalStartDist = flagStartDist * 2;
 

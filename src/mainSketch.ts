@@ -2,13 +2,21 @@ import p5 from 'p5';
 import { generateCameraShakeVector, updateCamera } from './cameraShake';
 import { drawClouds, setupClouds, updateClouds } from './clouds';
 import { toggleConfig } from './config';
+import { drawDebugHUD } from './debugHUD';
 import { drawDucks, setupDucks, updateDucks } from './ducks';
 import { drawDustParticles, updateDustParticles } from './dust';
 import { drawExplosions, updateExplosions } from './explosions';
+import {
+    drawFlags,
+    dropFlagIfPlayerCarrying,
+    setupFlags,
+    updateFlags,
+} from './flags';
 import { drawGround } from './ground';
 import { loadImages } from './images';
 import { drawMiniMap } from './minimap';
 import { setupPalette } from './palette';
+import { createPlayerTank, getPlayer } from './player';
 import { drawPowerups, setupPowerups, updatePowerups } from './powerups';
 import {
     drawProjectiles,
@@ -19,29 +27,17 @@ import {
 } from './projectile';
 import { drawSky, setupSky, updateSky } from './sky';
 import { setupSocketIO } from './socketio';
+import { setupSounds } from './sound';
 import './style.css';
 import { drawSun } from './sun';
-import { Tank } from './tank';
 import { getCachedTanks } from './tanksCache';
 import {
     getWeaponSystem,
     setupWeaponSystem,
     updateWeaponSystem,
 } from './weaponSys';
-import { setupSounds } from './sound';
-import { drawDebugHUD } from './debugHUD';
-import {
-    allTeamColours,
-    drawFlags,
-    dropFlagIfPlayerCarrying,
-    setupFlags,
-    updateFlags,
-} from './flags';
-import { pick } from './utils';
 
 const seed = 123;
-
-let player: Tank;
 
 new p5(createSketch);
 
@@ -87,14 +83,14 @@ function createSketch(p: p5) {
 
         drawDustParticles(p);
         drawPowerups(p);
-        player.draw(p);
+        getPlayer().draw(p);
         drawProjectiles(p);
         drawExplosions(p);
         drawClouds(p);
         drawMiniMap(p);
         drawDebugHUD(p);
 
-        player.update(p);
+        getPlayer().update(p);
         updatePowerups(p);
         updateProjectiles(p);
         updateExplosions(p);
@@ -122,16 +118,10 @@ function createSketch(p: p5) {
     p.windowResized = () => p.resizeCanvas(p.windowWidth, p.windowHeight);
 }
 
-function createPlayerTank(p: p5) {
-    const myId = p.floor(p.random(Number.MAX_SAFE_INTEGER));
-    const teamColour = pick(allTeamColours);
-    player = new Tank(p.random(100, 500), 300, myId, teamColour, p);
-}
-
 function keyPressed(_event: object | undefined, p: p5) {
     // console.log("key pressed: ", { event, p });
     if (p.key === ' ') {
-        if (player.isDead) {
+        if (getPlayer().isDead) {
             return;
         }
         const projectile = fireProjectile(p);
@@ -168,8 +158,4 @@ function toggleFrameRate(p: p5) {
     } else {
         p.frameRate(3);
     }
-}
-
-export function getPlayer(): Tank {
-    return player;
 }

@@ -12,9 +12,9 @@ import {
     getTankImgOrFail,
     storeTankImageFor,
 } from './images';
-import { getPlayer } from './mainSketch';
 import { Projectile } from './projectile';
 import { getSocket } from './socketio';
+import { getPlayer } from './player';
 export type TankId = number;
 
 export interface ReceivedTank {

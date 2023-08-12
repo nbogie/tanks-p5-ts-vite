@@ -1,6 +1,5 @@
 import p5 from 'p5';
 
-import { getPlayer } from './mainSketch';
 import { shakeCamera } from './cameraShake';
 import { getPowerups, powerupTakeDamage } from './powerups';
 import { duckTakeDamage, getDucks } from './ducks';
@@ -18,6 +17,7 @@ import {
 } from './sound';
 import { pick } from './utils';
 import { rainbowColours } from './colourUtils';
+import { getPlayer } from './player';
 
 let projectiles: Projectile[] = [];
 export type ProjectileKind = 'normal' | 'rainbow' | 'drunk';

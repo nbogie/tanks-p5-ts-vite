@@ -2,8 +2,8 @@ import p5 from 'p5';
 import { getConfigValue } from './config';
 import { getCachedTankKeys } from './tanksCache';
 import { getWeaponSystem } from './weaponSys';
-import { getPlayer } from './mainSketch';
 import { getScoreForTeam } from './flags';
+import { getPlayer } from './player';
 
 /** draw various bits of text to the canvas, to help debugging */
 export function drawDebugHUD(p: p5) {

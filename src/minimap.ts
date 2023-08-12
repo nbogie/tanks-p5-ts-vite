@@ -1,10 +1,10 @@
 import p5 from 'p5';
-import { getPlayer } from './mainSketch';
 import { getDucks } from './ducks';
 import { getPowerups } from './powerups';
 import { getConfig, getConfigValue } from './config';
 import { getCachedTanks } from './tanksCache';
 import { getRedFlag, getBlueFlag } from './flags';
+import { getPlayer } from './player';
 
 const minimapConfig = {
     width: 300,

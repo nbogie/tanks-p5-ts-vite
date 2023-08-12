@@ -11,9 +11,7 @@ function getOrInsertTank(soughtTankId: TankId, creationFn: () => Tank): Tank {
         return cachedTank;
     }
 
-    const newTank = creationFn();
-    cachedTanks[soughtTankId] = newTank;
-    return newTank;
+    return (cachedTanks[soughtTankId] = creationFn());
 }
 
 export function processReceivedTank(receivedTank: ReceivedTank, p: p5) {

@@ -150,6 +150,20 @@ function keyPressed(_event: object | undefined, p: p5) {
     if (p.key === 'f') {
         dropFlagIfPlayerCarrying();
     }
+
+    if (p.key === 'p') {
+        toggleFrameRate(p);
+    }
+}
+function toggleFrameRate(p: p5) {
+    function isApproximately(a: number, b: number, fraction = 0.01) {
+        return p.abs(a - b) < a * fraction;
+    }
+    if (isApproximately(p.frameRate(), 3)) {
+        p.frameRate(60);
+    } else {
+        p.frameRate(3);
+    }
 }
 
 export function getPlayer(): Tank {

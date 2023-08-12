@@ -106,9 +106,11 @@ export class Projectile {
         this.pos.add(this.vel);
         this.vel.add(this.acc);
         if (this.pos.dist(getPlayer().pos) < getPlayer().hitRadius) {
-            getPlayer().takeDamage(this, p);
-            shakeCamera();
-            darkenSky();
+            if (this.kind !== 'rainbow') {
+                getPlayer().takeDamage(this, p);
+                shakeCamera();
+                darkenSky();
+            }
             killProjectile(this, p);
             const terrainType = this.kind === 'rainbow' ? 'rainbow' : 'tank';
             spawnExplosion(this.pos, this.vel, terrainType, p);

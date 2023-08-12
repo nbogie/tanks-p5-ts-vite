@@ -3,7 +3,7 @@ import { ReceivedTank, Tank } from './tank';
 
 const cachedTanks: { [tankId: string]: Tank } = {};
 
-const disconnectedTankTimeoutSec = 5;
+const disconnectedTankTimeoutSec = 10;
 
 export function processReceivedTank(receivedTank: ReceivedTank, p: p5) {
     if (!(receivedTank.id in cachedTanks)) {

@@ -45,6 +45,11 @@ export class Projectile {
     }
 
     draw(p: p5) {
+        if (this.kind === 'rainbow') {
+            this.drawRainbowTrail(p);
+        } else {
+            this.drawTrail(p);
+        }
         p.push();
         p.translate(worldPositionToScreenPosition(this.pos, p));
         p.rotate(this.vel.heading());
@@ -52,11 +57,6 @@ export class Projectile {
 
         p.image(getImageFor('bullet'), 0, 0);
         p.pop();
-        if (this.kind === 'rainbow') {
-            this.drawRainbowTrail(p);
-        } else {
-            this.drawTrail(p);
-        }
     }
 
     drawTrail(p: p5) {

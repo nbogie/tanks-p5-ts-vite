@@ -30,6 +30,7 @@ export function drawDebugHUD(p: p5) {
             getScoreForTeam('red') +
             ', blue: ' +
             getScoreForTeam('blue'),
+        'mousePos: ' + p.mouseX.toFixed(0) + ', ' + p.mouseY.toFixed(0),
     ];
     linesToLog.forEach((line, ix) => p.text(line, p.width - 200, 20 + ix * 30));
     p.pop();

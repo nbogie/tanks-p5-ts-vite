@@ -6,6 +6,8 @@ import { collect } from './utils';
 let skyColours: p5.Color[];
 let darknessRemaining = 0;
 let stars: Star[];
+let myOffscreen: p5.Graphics;
+
 interface Star {
     pos: p5.Vector;
     alpha: number;
@@ -21,6 +23,7 @@ export function setupSky(p: p5) {
     ];
     // const set2 = [p.color('rgb(50,50,101)'), p.color('pink')];
     skyColours = p.random([set1]); //set2
+    myOffscreen = p.createGraphics(p.width, p.height);
 }
 
 export function createStar(p: p5) {
@@ -38,7 +41,12 @@ export function drawSky(p: p5) {
     if (darknessRemaining) {
         return;
     }
-    drawGradientSky(p);
+    if (p.frameCount === 1) {
+        drawGradientSky(myOffscreen);
+    } else {
+        p.imageMode(p.CORNER);
+        p.image(myOffscreen, 0, 0);
+    }
     drawStars(p);
     p.pop();
 }

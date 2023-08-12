@@ -30,7 +30,7 @@ import { setupSocketIO } from './socketio';
 import { setupSounds } from './sound';
 import './style.css';
 import { drawSun } from './sun';
-import { getCachedTanks } from './tanksCache';
+import { drawCachedTanks, updateCachedTanks } from './tanksCache';
 import {
     getWeaponSystem,
     setupWeaponSystem,
@@ -77,9 +77,7 @@ function createSketch(p: p5) {
         drawDucks(p);
         drawGround(p);
         drawFlags();
-        for (const cTank of getCachedTanks()) {
-            cTank.draw(p);
-        }
+        drawCachedTanks(p);
 
         drawDustParticles(p);
         drawPowerups(p);
@@ -95,6 +93,7 @@ function createSketch(p: p5) {
         updateProjectiles(p);
         updateExplosions(p);
         updateDustParticles(p);
+        updateCachedTanks(p);
         updateCamera(p);
         updateClouds(p);
         updateSky(p);

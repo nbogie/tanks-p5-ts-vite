@@ -38,6 +38,7 @@ export class Tank {
     hitRadius: number;
     isDead: boolean;
     teamColour: TeamColour;
+    lastHeardFromAtMs: number;
 
     constructor(
         x: number,
@@ -60,11 +61,14 @@ export class Tank {
         this.hitRadius = 40; //how close a projectile has to be to hit this tank.
         this.isDead = false;
         this.teamColour = teamColour;
+        this.lastHeardFromAtMs = p.millis();
     }
 
-    updateFromReceivedTank(receivedTank: ReceivedTank) {
+    updateFromReceivedTank(receivedTank: ReceivedTank, p: p5) {
         //copy all properties from received tank
         Object.assign(this, receivedTank);
+        //overwrite this attrib
+        this.lastHeardFromAtMs = p.millis();
     }
 
     takeDamage(projectile: Projectile, p: p5) {

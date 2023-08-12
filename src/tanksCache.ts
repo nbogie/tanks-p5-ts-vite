@@ -3,6 +3,8 @@ import { ReceivedTank, Tank } from './tank';
 
 const cachedTanks: { [tankId: string]: Tank } = {};
 
+const disconnectedTankTimeoutSec = 5;
+
 export function processReceivedTank(receivedTank: ReceivedTank, p: p5) {
     if (!(receivedTank.id in cachedTanks)) {
         const newTank = new Tank(
@@ -16,7 +18,7 @@ export function processReceivedTank(receivedTank: ReceivedTank, p: p5) {
         cachedTanks[receivedTank.id] = newTank;
     }
     const cachedTank = cachedTanks[receivedTank.id];
-    cachedTank.updateFromReceivedTank(receivedTank);
+    cachedTank.updateFromReceivedTank(receivedTank, p);
 }
 
 export function getCachedTanks(): Tank[] {
@@ -25,4 +27,23 @@ export function getCachedTanks(): Tank[] {
 
 export function getCachedTankKeys(): string[] {
     return Object.keys(cachedTanks);
+}
+
+export function drawCachedTanks(p: p5): void {
+    for (const cTank of getCachedTanks()) {
+        cTank.draw(p);
+    }
+}
+
+export function updateCachedTanks(p: p5): void {
+    const oneMinAgo = p.millis() - disconnectedTankTimeoutSec * 1000;
+    for (const cTank of getCachedTanks()) {
+        if (cTank.lastHeardFromAtMs < oneMinAgo) {
+            removeTankFromCache(cTank);
+        }
+    }
+}
+
+function removeTankFromCache(tank: Tank) {
+    delete cachedTanks[tank.id];
 }

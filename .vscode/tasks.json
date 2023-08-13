@@ -3,11 +3,23 @@
     "tasks": [
         {
             "type": "npm",
-            "script": "build",
-            "group": "build",
+            "script": "type-check",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
             "problemMatcher": ["$tsc"],
-            "label": "npm: build",
-            "detail": "tsc && vite build"
+            "label": "npm: type-check"
+        },
+        {
+            "type": "npm",
+            "script": "lint",
+            "group": {
+                "kind": "build"
+                // "isDefault": true
+            },
+            "problemMatcher": ["$eslint-stylish"],
+            "label": "npm: lint"
         }
     ]
 }

@@ -9,7 +9,14 @@
                 "isDefault": true
             },
             "problemMatcher": ["$tsc"],
-            "label": "npm: type-check"
+            "label": "npm: type-check",
+            "presentation": {
+                //reveal problems list if typechecker finds problems
+                "revealProblems": "onProblem",
+                //otherwise, don't open the terminal with tsc's happy output
+                //comment this out if you are debugging this task
+                "reveal": "silent"
+            }
         },
         {
             "type": "npm",
@@ -19,7 +26,14 @@
                 // "isDefault": true
             },
             "problemMatcher": ["$eslint-stylish"],
-            "label": "npm: lint"
+            "label": "npm: lint",
+            "presentation": {
+                //reveal problems list if typechecker finds problems
+                "revealProblems": "onProblem",
+                //otherwise, don't open the terminal with tsc's happy output
+                //comment this out if you are debugging this task
+                "reveal": "silent"
+            }
         }
     ]
 }

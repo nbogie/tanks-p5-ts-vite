@@ -1,10 +1,10 @@
-import p5 from 'p5';
-import { getDucks } from './ducks';
-import { getPowerups } from './powerups';
-import { getConfig, getConfigValue } from './config';
-import { getCachedTanks } from './tanksCache';
-import { getRedFlag, getBlueFlag } from './flags';
-import { getPlayer } from './player';
+import p5 from "p5";
+import { getDucks } from "./ducks";
+import { getPowerups } from "./powerups";
+import { getConfig, getConfigValue } from "./config";
+import { getCachedTanks } from "./tanksCache";
+import { getRedFlag, getBlueFlag } from "./flags";
+import { getPlayer } from "./player";
 
 const minimapConfig = {
     width: 300,
@@ -26,15 +26,15 @@ function drawMiniMapChrome(p: p5) {
     p.push();
     p.translate(0, minimapConfig.height / 2);
     p.rectMode(p.CENTER);
-    p.fill('rgba(255,255,255,0.15)');
+    p.fill("rgba(255,255,255,0.15)");
     p.strokeWeight(1);
-    p.stroke('white');
+    p.stroke("white");
     p.rect(0, 0, minimapConfig.width, minimapConfig.height, 10);
     p.pop();
 }
 
 export function drawMiniMap(p: p5) {
-    if (!getConfigValue('shouldDrawMiniMap')) {
+    if (!getConfigValue("shouldDrawMiniMap")) {
         return;
     }
     p.push();
@@ -44,27 +44,27 @@ export function drawMiniMap(p: p5) {
     const itemsToDraw = [
         {
             collection: getDucks(),
-            colour: 'rgb(151,93,33)',
+            colour: "rgb(151,93,33)",
         },
         {
             collection: getPowerups(),
-            colour: 'gray',
+            colour: "gray",
         },
         {
             collection: getCachedTanks(),
-            colour: 'yellow',
+            colour: "yellow",
         },
         {
             collection: [getRedFlag()],
-            colour: 'red',
+            colour: "red",
         },
         {
             collection: [getBlueFlag()],
-            colour: 'dodgerblue',
+            colour: "dodgerblue",
         },
         {
             collection: [getPlayer()],
-            colour: 'white',
+            colour: "white",
         },
     ];
 
@@ -92,13 +92,13 @@ export function drawMiniMap(p: p5) {
     }
 
     function vecToString(vec: p5.Vector, precision: number) {
-        return vec.x.toFixed(precision) + ', ' + vec.y.toFixed(precision);
+        return vec.x.toFixed(precision) + ", " + vec.y.toFixed(precision);
     }
 
     p.push();
     p.translate(worldPositionToMiniMapPosition(getPlayer().pos, p));
     p.noStroke();
-    p.fill('white');
+    p.fill("white");
     p.circle(0, 0, 6);
     p.pop();
 

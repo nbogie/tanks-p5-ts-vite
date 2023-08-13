@@ -1,16 +1,16 @@
-import p5 from 'p5';
+import p5 from "p5";
 //moving to tone.js
 // https://tonejs.github.io/docs/14.7.77/Signal
 // https://github.com/Tonejs/Tone.js/wiki/Signals
 // https://tonejs.github.io/docs/14.7.77/Oscillator.html#frequency
-import * as Tone from 'tone';
-import { Projectile } from './projectile';
-import { getPlayer } from './player';
+import * as Tone from "tone";
+import { Projectile } from "./projectile";
+import { getPlayer } from "./player";
 
 let projectileForAudio: Projectile | undefined;
 let projectileOsc: Tone.Oscillator;
-let projectileOscAmpSignal: Tone.Signal<'number'>;
-let projectileOscFreqSignal: Tone.Signal<'frequency'>;
+let projectileOscAmpSignal: Tone.Signal<"number">;
+let projectileOscFreqSignal: Tone.Signal<"frequency">;
 
 export function setupSounds(p: p5) {
     setupProjectileSounds(p);
@@ -18,12 +18,12 @@ export function setupSounds(p: p5) {
 
 function setupProjectileSounds(_p: p5) {
     //  = new p5.Oscillator(440, 'sine');
-    projectileOsc = new Tone.Oscillator(440, 'sine').toDestination().start();
+    projectileOsc = new Tone.Oscillator(440, "sine").toDestination().start();
     // a scheduleable signal which can be connected to control an AudioParam or another Signal
 
     projectileOscFreqSignal = new Tone.Signal({
-        value: 'C4',
-        units: 'frequency',
+        value: "C4",
+        units: "frequency",
     }).connect(projectileOsc.frequency);
 
     // the scheduled ramp controls the connected signal

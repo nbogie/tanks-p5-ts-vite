@@ -1,9 +1,9 @@
-import p5 from 'p5';
-import { worldPositionToScreenPosition } from './coordsUtils';
-import { calcGroundHeightAt } from './ground';
-import { getImageFor } from './images';
-import { TankId, getTankById } from './tank';
-import { getPlayer } from './player';
+import p5 from "p5";
+import { worldPositionToScreenPosition } from "./coordsUtils";
+import { calcGroundHeightAt } from "./ground";
+import { getImageFor } from "./images";
+import { TankId, getTankById } from "./tank";
+import { getPlayer } from "./player";
 const flagStartDist = 1000;
 const goalStartDist = flagStartDist * 2;
 
@@ -29,17 +29,17 @@ export interface Goal {
     hitRadius: number;
 }
 type Scores = Record<TeamColour, number>;
-export type TeamColour = 'red' | 'blue';
-export const allTeamColours: TeamColour[] = ['red', 'blue'];
+export type TeamColour = "red" | "blue";
+export const allTeamColours: TeamColour[] = ["red", "blue"];
 
 export function setupFlags(p: p5) {
     _cachedP5 = p;
 
-    redFlag = createFlag('red');
-    blueFlag = createFlag('blue');
+    redFlag = createFlag("red");
+    blueFlag = createFlag("blue");
 
-    redGoal = createGoal('red');
-    blueGoal = createGoal('blue');
+    redGoal = createGoal("red");
+    blueGoal = createGoal("blue");
 
     scores = {
         red: 0,
@@ -70,19 +70,19 @@ export function getBlueFlag(): Flag {
 }
 
 function getGoalForFlag(flag: Flag): Goal {
-    return flag.teamColour === 'red' ? blueGoal : redGoal;
+    return flag.teamColour === "red" ? blueGoal : redGoal;
 }
 
 function flagStartPoint(teamColour: TeamColour): p5.Vector {
     const p = getP5();
-    const x = teamColour === 'red' ? -flagStartDist : flagStartDist;
+    const x = teamColour === "red" ? -flagStartDist : flagStartDist;
     const y = calcGroundHeightAt(x, p) - 30;
     return p.createVector(x, y);
 }
 
 function goalPosition(teamColour: TeamColour): p5.Vector {
     const p = getP5();
-    const x = teamColour === 'red' ? -goalStartDist : goalStartDist;
+    const x = teamColour === "red" ? -goalStartDist : goalStartDist;
     const y = calcGroundHeightAt(x, p);
     return p.createVector(x, y);
 }
@@ -93,7 +93,7 @@ function createFlag(teamColour: TeamColour): Flag {
         animFrame: p.random([0, 1]),
         teamColour,
         pos: flagStartPoint(teamColour),
-        imageNamesStem: teamColour === 'red' ? 'flagRed' : 'flagBlue',
+        imageNamesStem: teamColour === "red" ? "flagRed" : "flagBlue",
         vel: p.createVector(0, 0),
         idOfCarryingTank: null,
         hitRadius: 60,
@@ -120,7 +120,7 @@ function drawGoal(goal: Goal) {
     );
     const diameterScale = p.map(p.sin(p.frameCount / 43), -1, 1, 0.8, 1.1);
     const fillColour = p.color(
-        goal.teamColour === 'red' ? 'tomato' : 'dodgerblue'
+        goal.teamColour === "red" ? "tomato" : "dodgerblue"
     );
     fillColour.setAlpha(100);
     p.stroke(255, 100);
@@ -152,7 +152,7 @@ function computeFlagPosAndCarryingTank(flag: Flag) {
     }
 }
 export function getOppositeTeamColour(teamColour: TeamColour): TeamColour {
-    return teamColour === 'red' ? 'blue' : 'red';
+    return teamColour === "red" ? "blue" : "red";
 }
 
 function drawFlag(flag: Flag) {

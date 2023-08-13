@@ -1,4 +1,4 @@
-import p5 from 'p5';
+import p5 from "p5";
 
 /** Return a colour which is overallFraction (0 <-> 1) of the way through the given list of colours.
 
@@ -28,11 +28,11 @@ export function lerpColours(
 }
 
 export const rainbowColours = [
-    'red',
-    'orange',
-    'yellow',
-    'lime',
-    'dodgerblue',
-    'indigo',
-    'violet',
+    "red",
+    "orange",
+    "yellow",
+    "lime",
+    "dodgerblue",
+    "indigo",
+    "violet",
 ];

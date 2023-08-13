@@ -1,17 +1,17 @@
-import p5 from 'p5';
-import { calcGroundHeightAt } from './ground';
-import { Projectile } from './projectile';
-import { worldPositionToScreenPosition } from './coordsUtils';
-import { collect } from './utils';
-import { getImageFor } from './images';
-import { getConfig } from './config';
-import { getPlayer } from './player';
+import p5 from "p5";
+import { calcGroundHeightAt } from "./ground";
+import { Projectile } from "./projectile";
+import { worldPositionToScreenPosition } from "./coordsUtils";
+import { collect } from "./utils";
+import { getImageFor } from "./images";
+import { getConfig } from "./config";
+import { getPlayer } from "./player";
 
 let powerups: Powerup[];
 
-const powerupKinds: PowerupKind[] = ['armor', 'ammo', 'repair'];
+const powerupKinds: PowerupKind[] = ["armor", "ammo", "repair"];
 
-type PowerupKind = 'armor' | 'ammo' | 'repair';
+type PowerupKind = "armor" | "ammo" | "repair";
 interface Powerup {
     pos: p5.Vector;
     vel: p5.Vector;
@@ -70,9 +70,9 @@ export function updatePowerups(p: p5) {
 
 export function imageKeyForPowerupKind(kind: PowerupKind) {
     return {
-        ammo: 'crateAmmo',
-        armor: 'crateArmor',
-        repair: 'crateRepair',
+        ammo: "crateAmmo",
+        armor: "crateArmor",
+        repair: "crateRepair",
     }[kind];
 }
 
@@ -84,12 +84,12 @@ export function drawPowerup(powerup: Powerup, p: p5) {
     p.translate(0, -sz / 2);
     p.rectMode(p.CENTER);
     p.imageMode(p.CENTER);
-    p.fill('beige');
+    p.fill("beige");
     p.square(0, 0, sz);
     if (powerup.isOpened) {
         p.image(getImageFor(imageKeyForPowerupKind(powerup.kind)), 0, 0);
     } else {
-        p.image(getImageFor('crateWood'), 0, 0);
+        p.image(getImageFor("crateWood"), 0, 0);
     }
 
     p.pop();
@@ -115,15 +115,15 @@ export function handlePowerupPlayerCollision(powerup: Powerup, p: p5) {
 
 export function playerCollectPowerup(powerup: Powerup, _p: p5) {
     switch (powerup.kind) {
-        case 'repair':
+        case "repair":
             getPlayer().health++;
             return true;
-        case 'ammo':
+        case "ammo":
             return false;
-        case 'armor':
+        case "armor":
             return false;
         default:
-            throw new Error('unexpected powerup kind: ' + powerup.kind);
+            throw new Error("unexpected powerup kind: " + powerup.kind);
     }
 }
 
@@ -132,14 +132,14 @@ export function playerCanCollectPowerup(powerup: Powerup, _p: p5) {
         return false;
     }
     switch (powerup.kind) {
-        case 'repair':
+        case "repair":
             return getPlayer().health < 3;
-        case 'ammo':
+        case "ammo":
             return true;
-        case 'armor':
+        case "armor":
             return false;
         default:
-            throw new Error('unexpected powerup kind: ' + powerup.kind);
+            throw new Error("unexpected powerup kind: " + powerup.kind);
     }
 }
 

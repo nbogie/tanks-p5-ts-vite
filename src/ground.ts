@@ -1,15 +1,15 @@
-import p5 from 'p5';
-import { isSkyDarkened } from './sky';
-import { getPaletteColour } from './palette';
-import { getPlayer } from './player';
-import { getConfigValue } from './config';
-import { fbmNoiseAtX } from './fbmNoiseAtX';
+import p5 from "p5";
+import { isSkyDarkened } from "./sky";
+import { getPaletteColour } from "./palette";
+import { getPlayer } from "./player";
+import { getConfigValue } from "./config";
+import { fbmNoiseAtX } from "./fbmNoiseAtX";
 
 export const terrainNoiseScale = 0.004;
 
 export function calcGroundHeightAt(x: number, p: p5, zOffset: number = 0) {
     //are we using fancy slower FBM algorithm or simpler?
-    if (getConfigValue('shouldUseFBMTerrain')) {
+    if (getConfigValue("shouldUseFBMTerrain")) {
         const noiseVal = fbmNoiseAtX(x, p, zOffset);
         return p.map(noiseVal, 0.4, 1.35, 680, 400, true);
     } else {
@@ -46,7 +46,7 @@ export function drawGround(p: p5) {
     p.push();
 
     const player = getPlayer();
-    p.text('Your x pos: ' + player.pos.x.toFixed(1) + '', 50, 50);
+    p.text("Your x pos: " + player.pos.x.toFixed(1) + "", 50, 50);
 
     p.beginShape();
     p.vertex(-50, p.height / 2);
@@ -73,7 +73,7 @@ export function drawGround(p: p5) {
         p.fill(200);
         player.drawExplosionCircle(p);
     } else {
-        p.fill(getPaletteColour('grass'));
+        p.fill(getPaletteColour("grass"));
         p.noStroke();
     }
     p.endShape();

@@ -1,28 +1,28 @@
-import p5 from 'p5';
+import p5 from "p5";
 
-import { shakeCamera } from './cameraShake';
-import { getPowerups, powerupTakeDamage } from './powerups';
-import { duckTakeDamage, getDucks } from './ducks';
-import { darkenSky } from './sky';
-import { calcGroundHeightAt } from './ground';
-import { spawnExplosion } from './explosions';
-import { worldPositionToScreenPosition } from './coordsUtils';
-import { getImageFor } from './images';
-import { getWeaponSystem } from './weaponSys';
-import { getSocket } from './socketio';
+import { shakeCamera } from "./cameraShake";
+import { getPowerups, powerupTakeDamage } from "./powerups";
+import { duckTakeDamage, getDucks } from "./ducks";
+import { darkenSky } from "./sky";
+import { calcGroundHeightAt } from "./ground";
+import { spawnExplosion } from "./explosions";
+import { worldPositionToScreenPosition } from "./coordsUtils";
+import { getImageFor } from "./images";
+import { getWeaponSystem } from "./weaponSys";
+import { getSocket } from "./socketio";
 import {
     handleKillProjectileAudio,
     maybeStartTrackingProjectileForAudio,
     updateProjectileSound,
-} from './sound';
-import { pick } from './utils';
-import { rainbowColours } from './colourUtils';
-import { getPlayer } from './player';
+} from "./sound";
+import { pick } from "./utils";
+import { rainbowColours } from "./colourUtils";
+import { getPlayer } from "./player";
 
 let projectiles: Projectile[] = [];
-export type ProjectileKind = 'normal' | 'rainbow' | 'drunk';
+export type ProjectileKind = "normal" | "rainbow" | "drunk";
 export function randomProjectileKind(): ProjectileKind {
-    const choices: ProjectileKind[] = ['drunk', 'rainbow', 'normal'];
+    const choices: ProjectileKind[] = ["drunk", "rainbow", "normal"];
     return pick(choices);
 }
 
@@ -45,7 +45,7 @@ export class Projectile {
     }
 
     draw(p: p5) {
-        if (this.kind === 'rainbow') {
+        if (this.kind === "rainbow") {
             this.drawRainbowTrail(p);
         } else {
             this.drawTrail(p);
@@ -55,7 +55,7 @@ export class Projectile {
         p.rotate(this.vel.heading());
         p.imageMode(p.CENTER);
 
-        p.image(getImageFor('bullet'), 0, 0);
+        p.image(getImageFor("bullet"), 0, 0);
         p.pop();
     }
 
@@ -99,7 +99,7 @@ export class Projectile {
         if (this.trail.length > 30) {
             this.trail.shift();
         }
-        if (this.kind === 'drunk') {
+        if (this.kind === "drunk") {
             this.acc.add(p5.Vector.random2D().mult(0.1));
         }
 
@@ -114,13 +114,13 @@ export class Projectile {
 
     handleCollisionWithPlayer(p: p5) {
         if (this.pos.dist(getPlayer().pos) < getPlayer().hitRadius) {
-            if (this.kind !== 'rainbow') {
+            if (this.kind !== "rainbow") {
                 getPlayer().takeDamage(this, p);
                 shakeCamera();
                 darkenSky();
             }
             killProjectile(this, p);
-            const terrainType = this.kind === 'rainbow' ? 'rainbow' : 'tank';
+            const terrainType = this.kind === "rainbow" ? "rainbow" : "tank";
             spawnExplosion(this.pos, this.vel, terrainType, p);
         }
     }
@@ -130,7 +130,7 @@ export class Projectile {
                 spawnExplosion(
                     this.pos,
                     this.vel,
-                    pup.isOpened ? 'crateOpened' : 'crateClosed',
+                    pup.isOpened ? "crateOpened" : "crateClosed",
                     p
                 );
                 killProjectile(this, p);
@@ -141,7 +141,7 @@ export class Projectile {
     handleCollisionWithDucks(p: p5) {
         for (const duck of getDucks()) {
             if (this.pos.dist(duck.pos) < duck.size && !duck.isDead) {
-                spawnExplosion(this.pos, this.vel, 'crateClosed', p);
+                spawnExplosion(this.pos, this.vel, "crateClosed", p);
                 killProjectile(this, p);
                 duckTakeDamage(duck, this, p);
             }
@@ -155,7 +155,7 @@ export class Projectile {
             spawnExplosion(
                 p.createVector(this.pos.x, groundY - 5),
                 this.vel,
-                this.kind === 'rainbow' ? 'rainbow' : 'ground',
+                this.kind === "rainbow" ? "rainbow" : "ground",
                 p
             );
         }
@@ -193,7 +193,7 @@ export function emitProjectile(projectile: Projectile) {
         vel: projectile.vel,
         kind: projectile.kind,
     };
-    getSocket().emit('bulletFired', b);
+    getSocket().emit("bulletFired", b);
 }
 
 export function fireProjectile(p: p5) {

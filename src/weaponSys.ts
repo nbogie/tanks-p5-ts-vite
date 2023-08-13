@@ -1,5 +1,5 @@
-import p5 from 'p5';
-import { ProjectileKind } from './projectile';
+import p5 from "p5";
+import { ProjectileKind } from "./projectile";
 
 export interface WeaponSystem {
     getAmmoCount: () => number;
@@ -21,7 +21,7 @@ export function updateWeaponSystem(_p: p5): void {
     weaponSystemGlobal.update();
 }
 export function setupWeaponSystem(p: p5): void {
-    let projectileKind: ProjectileKind = 'drunk';
+    let projectileKind: ProjectileKind = "drunk";
     let ammoCount = 5;
     let lastFiredMillis: number | null = null;
     let lastRegainAmmoMillis: number | null = null;

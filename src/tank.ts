@@ -1,21 +1,21 @@
-import p5 from 'p5';
-import { getConfig } from './config';
-import { worldPositionToScreenPosition } from './coordsUtils';
-import { fireDustParticle } from './dust';
-import { spawnExplosion } from './explosions';
-import { TeamColour, dropFlagIfPlayerCarrying } from './flags';
-import { calcGroundAngle, calcGroundHeightAt } from './ground';
+import p5 from "p5";
+import { getConfig } from "./config";
+import { worldPositionToScreenPosition } from "./coordsUtils";
+import { fireDustParticle } from "./dust";
+import { spawnExplosion } from "./explosions";
+import { TeamColour, dropFlagIfPlayerCarrying } from "./flags";
+import { calcGroundAngle, calcGroundHeightAt } from "./ground";
 import {
     getImageFor,
     getRandomTankImgIxForTeam,
     getTankImg,
     getTankImgOrFail,
     storeTankImageFor,
-} from './images';
-import { Projectile } from './projectile';
-import { getSocket } from './socketio';
-import { getPlayer } from './player';
-import { getCachedTankById } from './tanksCache';
+} from "./images";
+import { Projectile } from "./projectile";
+import { getSocket } from "./socketio";
+import { getPlayer } from "./player";
+import { getCachedTankById } from "./tanksCache";
 export type TankId = number;
 
 export interface ReceivedTank {
@@ -84,7 +84,7 @@ export class Tank {
             for (let i = 0; i < 10; i++) {
                 const pos = p5.Vector.random2D().mult(30).add(projectile.pos);
                 setTimeout(
-                    () => spawnExplosion(pos, p.createVector(0, 0), 'tank', p),
+                    () => spawnExplosion(pos, p.createVector(0, 0), "tank", p),
                     i * 100
                 );
             }
@@ -100,10 +100,10 @@ export class Tank {
             p.scale(-1, 1); //possible scale to flip horizontally
         }
 
-        const img = getTankImgOrFail(this.teamColour, this.imgIx + '');
+        const img = getTankImgOrFail(this.teamColour, this.imgIx + "");
         const imgWhite = makeAndCacheWhiteImageIfNecessary(
             this.teamColour,
-            this.imgIx + '',
+            this.imgIx + "",
             p
         );
         const imgToDraw = this.damageDisplay > 0 ? imgWhite : img;
@@ -129,7 +129,7 @@ export class Tank {
         p.push();
         //draw explosion circle and colour the ground correctly
         p.stroke(255, 10);
-        p.fill('rgba(255,165,0,0.69)');
+        p.fill("rgba(255,165,0,0.69)");
         const cPos = worldPositionToScreenPosition(getPlayer().pos, p);
         p.circle(cPos.x, cPos.y, p.random(150, 200));
         p.fill(40);
@@ -150,7 +150,7 @@ export class Tank {
         p.push();
         p.translate(worldPositionToScreenPosition(this.pos, p));
         p.textSize(20);
-        p.fill('white');
+        p.fill("white");
         p.textAlign(p.CENTER, p.CENTER);
         p.text(this.id % 10000, 0, 100);
         p.pop();
@@ -162,7 +162,7 @@ export class Tank {
             p.translate(-50 + i * 50, 130);
             p.scale(0.08);
             p.imageMode(p.CENTER);
-            p.image(getImageFor('shield'), 0, 0);
+            p.image(getImageFor("shield"), 0, 0);
             p.pop();
         }
     }
@@ -173,7 +173,7 @@ export class Tank {
         this.damageDisplay = p.max(0, this.damageDisplay - 1);
 
         if (p.frameCount % 6 === 0 && getConfig().shouldTransmit) {
-            getSocket().emit('tankUpdate', this);
+            getSocket().emit("tankUpdate", this);
         }
         const playerAccel =
             p.keyIsDown(p.RIGHT_ARROW) || p.keyIsDown(68)
@@ -277,14 +277,14 @@ function drawAimingArrow(tank: Tank, angle: number, p: p5) {
     // translate(0,-20) //up to visual turret position
     p.rotate(angle);
     p.scale(tank.aimPower / 75);
-    p.translate(getImageFor('arrowEmpty').width / 2, 0);
+    p.translate(getImageFor("arrowEmpty").width / 2, 0);
     p.tint(255, 128);
     if (tank.aimPower < 90) {
         p.imageMode(p.CENTER);
-        p.image(getImageFor('arrowEmpty'), 0, 0);
+        p.image(getImageFor("arrowEmpty"), 0, 0);
     } else {
         p.imageMode(p.CENTER);
-        p.image(getImageFor('arrowFull'), 0, 0);
+        p.image(getImageFor("arrowFull"), 0, 0);
     }
     p.pop();
 }
@@ -294,7 +294,7 @@ function makeAndCacheWhiteImageIfNecessary(
     keyForNormal: string,
     p: p5
 ): p5.Image {
-    const keyForWhite: string = keyForNormal + '-white';
+    const keyForWhite: string = keyForNormal + "-white";
     if (getTankImg(teamColour, keyForWhite) === undefined) {
         storeTankImageFor(
             teamColour,

@@ -1,7 +1,7 @@
-import p5 from 'p5';
-import { pick } from './utils';
-import { allTeamColours } from './flags';
-import { Tank } from './tank';
+import p5 from "p5";
+import { pick } from "./utils";
+import { allTeamColours } from "./flags";
+import { Tank } from "./tank";
 
 let player: Tank;
 

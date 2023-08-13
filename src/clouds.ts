@@ -1,9 +1,9 @@
-import p5 from 'p5';
-import { ParallaxLayerIx, cloudPositionToScreenPosition } from './coordsUtils';
-import { getPaletteColour } from './palette';
-import { getPlayer } from './player';
-import { getSkyReflectionColourUnder } from './sky';
-import { collect } from './utils';
+import p5 from "p5";
+import { ParallaxLayerIx, cloudPositionToScreenPosition } from "./coordsUtils";
+import { getPaletteColour } from "./palette";
+import { getPlayer } from "./player";
+import { getSkyReflectionColourUnder } from "./sky";
+import { collect } from "./utils";
 
 let clouds: Cloud[] = [];
 
@@ -62,7 +62,7 @@ export function createCloud(p: p5) {
         layerIx,
         w,
         h,
-        colour: getPaletteColour('cloud'),
+        colour: getPaletteColour("cloud"),
         isDead: false,
         density,
     };

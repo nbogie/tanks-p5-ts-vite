@@ -1,10 +1,10 @@
-import p5 from 'p5';
-import { worldPositionToScreenPosition } from './coordsUtils';
-import { calcGroundHeightAt } from './ground';
-import { Projectile } from './projectile';
-import { collect } from './utils';
-import { getImageFor } from './images';
-import { getConfig } from './config';
+import p5 from "p5";
+import { worldPositionToScreenPosition } from "./coordsUtils";
+import { calcGroundHeightAt } from "./ground";
+import { Projectile } from "./projectile";
+import { collect } from "./utils";
+import { getImageFor } from "./images";
+import { getConfig } from "./config";
 
 //assets from https://www.kenney.nl/assets/shooting-gallery
 let ducks: Duck[];
@@ -12,7 +12,7 @@ type DuckKind = 1 | 2 | 3;
 
 interface Duck {
     originalPos: p5.Vector;
-    motion: 'horizontal' | 'vertical' | 'none';
+    motion: "horizontal" | "vertical" | "none";
     pos: p5.Vector;
     vel: p5.Vector;
     kind: DuckKind;
@@ -49,7 +49,7 @@ export function createDucks(p: p5) {
 
 export function createDuck(p: p5): Duck {
     const isGroundDuck = p.random([true, false]);
-    const motion = p.random(['horizontal', 'vertical', null]);
+    const motion = p.random(["horizontal", "vertical", null]);
     const x = p.random(-4000, 4000);
     const y = isGroundDuck ? calcGroundHeightAt(x, p) : 200;
     const originalPos = p.createVector(x, y);
@@ -88,9 +88,9 @@ export function updateDucks(p: p5) {
 
 export function imageKeyForDuckKind(kind: DuckKind) {
     return {
-        1: 'duck1',
-        2: 'duck2',
-        3: 'duck3',
+        1: "duck1",
+        2: "duck2",
+        3: "duck3",
     }[kind];
 }
 
@@ -104,7 +104,7 @@ export function drawDuck(duck: Duck, p: p5) {
     p.imageMode(p.CENTER);
     p.scale(0.6, 0.6);
     p.rotate(duck.rotation);
-    p.image(getImageFor('duckStick'), 0, 110);
+    p.image(getImageFor("duckStick"), 0, 110);
     p.image(getImageFor(imageKeyForDuckKind(duck.kind)), 0, 0);
     p.pop();
 }
@@ -118,14 +118,14 @@ export function updateDuck(duck: Duck, p: p5) {
             duck.isDead = true;
         }
     } else {
-        if (duck.motion === 'horizontal') {
+        if (duck.motion === "horizontal") {
             const x =
                 duck.originalPos.x +
                 p.map(p.sin(p.frameCount / 40), -1, 1, -50, 50, true);
             const y = calcGroundHeightAt(x, p);
             duck.pos = p.createVector(x, y);
         }
-        if (duck.motion === 'vertical') {
+        if (duck.motion === "vertical") {
             const x = duck.originalPos.x;
             const y =
                 duck.originalPos.y +

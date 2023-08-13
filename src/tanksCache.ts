@@ -1,5 +1,5 @@
-import p5 from 'p5';
-import { ReceivedTank, Tank, TankId } from './tank';
+import p5 from "p5";
+import { ReceivedTank, Tank, TankId } from "./tank";
 
 const cachedTanks: { [tankId: string]: Tank } = {};
 

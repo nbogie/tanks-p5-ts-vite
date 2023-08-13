@@ -1,5 +1,5 @@
-import p5 from 'p5';
-import { terrainNoiseScale } from './ground';
+import p5 from "p5";
+import { terrainNoiseScale } from "./ground";
 
 /** fractional brownian motion.  additive layers of noise at different frequencies.  more expensive to compute. */
 export function fbmNoiseAtX(worldX: number, p: p5, zOffset: number = 0) {

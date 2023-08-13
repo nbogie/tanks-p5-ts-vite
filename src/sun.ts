@@ -1,8 +1,8 @@
-import p5 from 'p5';
+import p5 from "p5";
 
 export function drawSun(p: p5) {
     p.push();
-    const sunColour = 'rgba(255,255,255,0.03)';
+    const sunColour = "rgba(255,255,255,0.03)";
     p.stroke(sunColour);
     p.noFill();
     p.translate(100, 100);
@@ -33,7 +33,7 @@ export function drawSun(p: p5) {
         p.rotate((i * p.PI) / 8 + p.frameCount / 4000);
         p.arc(0, 0, radius, radius, p.PI / 4, p.PI / 4 + 0.1);
     }
-    p.fill('white');
+    p.fill("white");
     p.circle(0, 0, 100);
     p.pop();
 }

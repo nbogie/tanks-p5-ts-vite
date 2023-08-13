@@ -1,7 +1,7 @@
-import p5 from 'p5';
-import { calcGroundHeightAt } from './ground';
-import { worldPositionToScreenPosition } from './coordsUtils';
-import { getPaletteColour } from './palette';
+import p5 from "p5";
+import { calcGroundHeightAt } from "./ground";
+import { worldPositionToScreenPosition } from "./coordsUtils";
+import { getPaletteColour } from "./palette";
 
 let dustParticles: DustParticle[] = [];
 
@@ -40,7 +40,7 @@ export function createDustParticle(
         size: p.random(3, 8),
         rotation: p.random(p.TWO_PI),
         rotationSpeed: p.random(-0.2, 0.2),
-        colour: getPaletteColour(p.random(['grass', 'dirt', 'dust'])),
+        colour: getPaletteColour(p.random(["grass", "dirt", "dust"])),
         life: 100,
     };
 }

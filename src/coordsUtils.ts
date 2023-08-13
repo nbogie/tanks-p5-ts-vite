@@ -1,5 +1,5 @@
-import p5 from 'p5';
-import { getPlayer } from './player';
+import p5 from "p5";
+import { getPlayer } from "./player";
 
 export function worldPositionToScreenPosition(pos: p5.Vector, p: p5) {
     return p.createVector(p.width / 2 + pos.x - getPlayer().pos.x, pos.y);
@@ -43,5 +43,5 @@ export function screenPositionToCloudPosition(
 }
 
 export function intVecToS(v: p5.Vector): string {
-    return [v.x, v.y].map((val) => val.toFixed(0)).join(', ');
+    return [v.x, v.y].map((val) => val.toFixed(0)).join(", ");
 }

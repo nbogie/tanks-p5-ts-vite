@@ -1,7 +1,7 @@
-import p5 from 'p5';
-import { lerpColours } from './colourUtils';
-import { starPositionToScreenPosition } from './coordsUtils';
-import { collect } from './utils';
+import p5 from "p5";
+import { lerpColours } from "./colourUtils";
+import { starPositionToScreenPosition } from "./coordsUtils";
+import { collect } from "./utils";
 
 let skyColours: p5.Color[];
 let darknessRemaining = 0;
@@ -16,10 +16,10 @@ interface Star {
 export function setupSky(p: p5) {
     stars = collect(100, (_ix) => createStar(p));
     const set1: p5.Color[] = [
-        p.color('rgb(50,50,101)'),
-        p.color('cyan'),
-        p.color('pink'),
-        p.color('rgb(190,151,158)'),
+        p.color("rgb(50,50,101)"),
+        p.color("cyan"),
+        p.color("pink"),
+        p.color("rgb(190,151,158)"),
     ];
     // const set2 = [p.color('rgb(50,50,101)'), p.color('pink')];
     skyColours = p.random([set1]); //set2
@@ -89,7 +89,7 @@ export function isSkyDarkened() {
 export function getSkyReflectionColourUnder(pos: p5.Vector, p: p5) {
     if (isSkyDarkened()) {
         // if (abs(x - player.pos.x) < 300) {
-        return 'rgba(255,165,0,0.9)';
+        return "rgba(255,165,0,0.9)";
         // }
     }
     p.push();
@@ -97,8 +97,8 @@ export function getSkyReflectionColourUnder(pos: p5.Vector, p: p5) {
 
     const c =
         pos.y > p.height * 0.33
-            ? 'rgba(255,222,227,0.33)'
-            : 'rgba(0,255,255,0.23)';
+            ? "rgba(255,222,227,0.33)"
+            : "rgba(0,255,255,0.23)";
     // const c = lerpColours(skyColours, constrain((y + 100) / p.height, 0, 1));
     // c.setAlpha(50);
     p.pop();

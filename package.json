@@ -6,6 +6,7 @@
     "scripts": {
         "dev": "vite",
         "dev2": "yarn type-check && yarn lint && yarn format && yarn dev",
+        "type-check-and-lint": "yarn type-check && yarn lint",
         "build": "tsc && vite build",
         "preview": "vite preview",
         "test": "vitest --no-watch src",

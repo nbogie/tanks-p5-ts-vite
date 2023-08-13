@@ -59,5 +59,6 @@ minor additions:
 
 -   Tom Owen wrote the original tanks game code on openprocessing: https://openprocessing.org/sketch/1981232
 -   Assets from kenney.nl (CC0 license)
-    -   https://www.kenney.nl/assets/tanks
-    -   https://www.kenney.nl/assets/shooting-gallery
+    -   tanks: https://www.kenney.nl/assets/tanks
+    -   ducks: https://www.kenney.nl/assets/shooting-gallery
+    -   flags: https://www.kenney.nl/assets/platformer-art-deluxe

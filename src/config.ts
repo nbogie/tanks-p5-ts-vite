@@ -27,3 +27,8 @@ type BooleanKeys<T> = {
 export function toggleConfig<K extends BooleanKeys<Config>>(key: K): boolean {
     return (config[key] = !config[key]);
 }
+
+//simpler, non-generic:
+// type BooleanKeysOfConfig = {
+//     [K in keyof Config]: Config[K] extends boolean ? K : never;
+// }[keyof Config];

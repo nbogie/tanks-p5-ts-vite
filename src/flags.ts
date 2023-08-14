@@ -4,8 +4,9 @@ import { calcGroundHeightAt } from "./ground";
 import { getImageFor } from "./images";
 import { TankId, getTankById } from "./tank";
 import { getPlayer } from "./player";
-const flagStartDist = 1000;
-const goalStartDist = flagStartDist * 2;
+import { getConfigValue } from "./config";
+const flagStartDist = getConfigValue("flagStartDistance");
+const goalStartDist = getConfigValue("goalStartDistance");
 
 let redFlag: Flag;
 let blueFlag: Flag;

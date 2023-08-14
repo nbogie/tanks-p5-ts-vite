@@ -5,6 +5,8 @@ const config = {
     shouldDrawMiniMapCoords: false,
     shouldDrawMiniMap: true,
     shouldUseFBMTerrain: false,
+    flagStartDistance: 1000,
+    goalStartDistance: 2000,
 };
 
 type Config = typeof config;
@@ -17,7 +19,11 @@ export function getConfigValue<T extends keyof Config>(key: T): Config[T] {
     return config[key];
 }
 
-//TODO: limit this to the config props which are boolean
-export function toggleConfig(key: keyof Config) {
-    config[key] = !config[key];
+//BooleanKeys<Config> is the union of the keys of all the boolean properties in Config, but not the string or numeric ones.
+type BooleanKeys<T> = {
+    [K in keyof T]: T[K] extends boolean ? K : never;
+}[keyof T];
+
+export function toggleConfig<K extends BooleanKeys<Config>>(key: K): boolean {
+    return (config[key] = !config[key]);
 }
